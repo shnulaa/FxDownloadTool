@@ -29,14 +29,10 @@ import cn.shnulaa.worker.SnapshotWorker;
  * 
  */
 public final class ForkJoinDownload {
-
 	/** the file destination folder **/
 	private static final String FOLDER = "./";
 	/** ForkJoinPool pool size **/
 	private static final int POOL_SIZE = 15;
-
-	// private static boolean useHeader = false;
-
 	/** the instance of Manager **/
 	private static final Manager m = Manager.getInstance();
 
@@ -123,19 +119,19 @@ public final class ForkJoinDownload {
 					pool.submit(new DownloadWorker(0, size, url, new File(fullPath)));
 					s.scheduleAtFixedRate(new SnapshotWorker(sFile, size), 0, 1, TimeUnit.SECONDS);
 				} finally {
-					// if (pool != null) {
-					// pool.shutdown();
-					// }
-					// pool.awaitTermination(30, TimeUnit.HOURS);
-					//
-					// if (s != null) {
-					// s.shutdown();
-					// }
-					// s.awaitTermination(30, TimeUnit.HOURS);
-					//
-					// if (sFile.exists()) {
-					// sFile.deleteOnExit();
-					// }
+					if (pool != null) {
+						pool.shutdown();
+					}
+					pool.awaitTermination(30, TimeUnit.HOURS);
+
+					if (s != null) {
+						s.shutdown();
+					}
+					s.awaitTermination(30, TimeUnit.HOURS);
+
+					if (sFile.exists()) {
+						sFile.deleteOnExit();
+					}
 				}
 
 				System.out.print(ProgressBar.showBarByPoint(100, 100, 70, m.getPerSecondSpeed(), true));

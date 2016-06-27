@@ -1,10 +1,5 @@
 package shnulaa.fx.controller;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.apache.commons.lang3.StringUtils;
 
 import cn.shnulaa.main.ForkJoinDownload;
@@ -37,14 +32,10 @@ public class MainLayoutController {
 
 	/** array */
 	private Rectangle[][] array; // save the Rectangle object to array
-
 	private static final int WIDTH = 100;
 	private static final int HEIGHT = 100;
-
 	private static final int PIXELS = WIDTH * HEIGHT;
-
 	private Manager m = Manager.getInstance();
-	private ExecutorService service;
 
 	/**
 	 * constructor
@@ -74,40 +65,10 @@ public class MainLayoutController {
 		m.addListener(new ChangedListener() {
 			@Override
 			public void change(final long current, final Thread t) {
-				// final long size = m.getSize();
-				// long newCurrent = (current * PIXELS) / size;
 				changeColor(current, m.getSize());
 			}
 		});
 
-		service = Executors.newCachedThreadPool(new ThreadFactory() {
-			private AtomicInteger index = new AtomicInteger();
-
-			@Override
-			public Thread newThread(Runnable r) {
-
-				Thread t = new Thread(r);
-				t.setDaemon(true);
-				t.setName("Change-UI" + index.incrementAndGet());
-				return t;
-			}
-		});
-
-		// Collection<DownloadWorker> workers = m.getCollections();
-		// if (workers.isEmpty()) {
-		// return;
-		// }
-		//
-		// for (final DownloadWorker worker : workers) {
-		// worker.addListener(new ChangedListener() {
-		// @Override
-		// public void change(final long current, final Thread t) {
-		// final long size = m.getSize();
-		// long newCurrent = (current / size) * PIXELS;
-		// changeColor(newCurrent, PIXELS);
-		// }
-		// });
-		// }
 	}
 
 	/**
@@ -117,25 +78,6 @@ public class MainLayoutController {
 	 * @param totol
 	 */
 	public void changeColor(final long current, final long totol) {
-		// service.submit(() -> {
-		// int percent = (int) (current * PIXELS / totol);
-		//
-		// System.out.println(percent);
-		// int x = (int) percent / 100;
-		// int y = (int) percent % 100;
-		// if (x >= 100 || y >= 100) {
-		// System.err.println("ArrayIndexOutOfBoundsException 100");
-		// return;
-		// }
-		// final Rectangle r = array[x][y];
-		// synchronized (r) {
-		// if (r.getFill() != Color.RED) {
-		// array[x][y].setFill(Color.RED);
-		// }
-		// }
-		//
-		// });
-
 		Platform.runLater(() -> {
 			int percent = (int) (current * PIXELS / totol);
 
@@ -173,13 +115,13 @@ public class MainLayoutController {
 		}
 
 		final String[] args = { addressTxt, "15", localAddressTxt, "1.exe" };
-		try {
-			ForkJoinDownload.main(args);
-		} catch (Throwable e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		new Thread(() -> {
+			try {
+				ForkJoinDownload.main(args);
+			} catch (Throwable e) {
+				showAlert("Download Tools", "Exception occurred, message: " + e.getMessage(), Alert.AlertType.ERROR);
+			}
+		}).start();
 	}
 
 	public Rectangle[][] getArray() {
