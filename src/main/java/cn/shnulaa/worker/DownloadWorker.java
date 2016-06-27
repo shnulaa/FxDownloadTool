@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.LockSupport;
 
 import cn.shnulaa.manager.Manager;
 
@@ -113,6 +114,12 @@ public class DownloadWorker extends RecursiveAction {
 
 					int readed = 0;
 					while ((readed = bis.read(bytes)) != -1) {
+						// while (m.pauseThread.compareAndSet(false, update))
+
+						while (m.isPause()) {
+							LockSupport.park();
+						}
+
 						file.write(bytes, 0, readed);
 						current.getAndAdd(readed);
 						m.getListener().change(current.get(), Thread.currentThread());

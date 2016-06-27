@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import cn.shnulaa.bar.ProgressBar;
 import cn.shnulaa.manager.Manager;
+import cn.shnulaa.thread.ForkJoinWorkerThreadFactoryExt;
 import cn.shnulaa.worker.DownloadWorker;
 import cn.shnulaa.worker.SnapshotWorker;
 
@@ -105,7 +106,7 @@ public final class ForkJoinDownload {
 				ForkJoinPool pool = null;
 				try {
 					s = Executors.newSingleThreadScheduledExecutor();
-					pool = new ForkJoinPool(threadNumber);
+					pool = new ForkJoinPool(threadNumber, new ForkJoinWorkerThreadFactoryExt(), null, false);
 
 					recovery(sFile);
 					m.setSize(size);
@@ -132,6 +133,7 @@ public final class ForkJoinDownload {
 				System.out.flush();
 				long end = System.currentTimeMillis();
 				System.out.println("cost time: " + (end - start) / 1000 + "s");
+				m.getPlistener().change(1, 0, Thread.currentThread());
 			} else {
 				System.err.println("The destination url http connection is not support.");
 			}

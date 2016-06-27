@@ -34,6 +34,9 @@ public class MainLayoutController {
 	private Button download;
 
 	@FXML
+	private Button pauseOrResume;
+
+	@FXML
 	private Pane processPane;
 
 	@FXML
@@ -61,7 +64,7 @@ public class MainLayoutController {
 	@FXML
 	private void initialize() {
 		address.setText("http://down.360safe.com/cse/360cse_8.5.0.126.exe");
-		localAddress.setText("d:\\");
+		localAddress.setText("f:\\");
 
 		this.array = new Rectangle[WIDTH][HEIGHT];
 		for (int j = 0; j < WIDTH; j++) {
@@ -89,7 +92,7 @@ public class MainLayoutController {
 			public void change(double rate, long speed, Thread t) {
 				Platform.runLater(() -> {
 					process.progressProperty().set(rate);
-					percentLab.setText(String.valueOf(rate * 100) + "%");
+					percentLab.setText((int) (rate * 100) + "%");
 					speedLab.setText(String.valueOf(speed) + "KB/S");
 				});
 			}
@@ -169,6 +172,18 @@ public class MainLayoutController {
 		if (file != null) {
 			localAddress.setText(file.getAbsolutePath());
 		}
+	}
+
+	@FXML
+	private void handlePauseOrResume() {
+		if (m.isPause()) {
+			m.resume();
+			pauseOrResume.setText("暂停");
+		} else {
+			m.setPause(true);
+			pauseOrResume.setText("继续");
+		}
+
 	}
 
 	/**

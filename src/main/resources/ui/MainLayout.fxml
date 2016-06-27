@@ -31,5 +31,6 @@
         </tabs>
       </TabPane>
       <Button fx:id="download" layoutX="30.0" layoutY="343.0" mnemonicParsing="false" onAction="#handleDownload" text="下载" />
+      <Button fx:id="pauseOrResume" layoutX="89.0" layoutY="343.0" mnemonicParsing="false" onAction="#handlePauseOrResume" text="暂停" />
    </children>
 </Pane>

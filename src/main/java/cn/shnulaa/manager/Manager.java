@@ -1,10 +1,14 @@
 package cn.shnulaa.manager;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.LockSupport;
 
 import cn.shnulaa.worker.DownloadWorker;
 
@@ -30,6 +34,10 @@ public class Manager implements Serializable {
 	private transient ChangedListener listener;
 	private transient ProcessChangedListener plistener;
 
+	private transient volatile AtomicBoolean pause = new AtomicBoolean(false);
+
+	public transient List<Thread> threads;
+
 	public void addListener(ChangedListener listener) {
 		this.setListener(listener);
 	}
@@ -52,6 +60,7 @@ public class Manager implements Serializable {
 
 	private Manager() {
 		this.map = new ConcurrentHashMap<>();
+		this.threads = new ArrayList<>();
 	}
 
 	public Map<String, DownloadWorker> getMap() {
@@ -121,4 +130,26 @@ public class Manager implements Serializable {
 		this.plistener = plistener;
 	}
 
+	public boolean isPause() {
+		return pause.get();
+	}
+
+	public void setPause(boolean pause) {
+		this.pause.set(pause);
+	}
+
+	public void addThread(Thread t) {
+		this.threads.add(t);
+	}
+
+	public void resume() {
+		if (this.pause.compareAndSet(true, false)) {
+			for (Thread t : this.threads) {
+				LockSupport.unpark(t);
+
+			}
+
+		}
+
+	}
 }
