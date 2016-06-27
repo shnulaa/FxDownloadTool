@@ -15,7 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.FileChooser;
+import javafx.stage.DirectoryChooser;
 
 public class MainLayoutController {
 	@FXML
@@ -92,7 +92,7 @@ public class MainLayoutController {
 			final Rectangle r = array[x][y];
 			synchronized (r) {
 				if (r.getFill() != Color.RED) {
-					System.out.println(percent);
+					// System.out.println(percent);
 					array[x][y].setFill(Color.RED);
 				}
 			}
@@ -134,9 +134,12 @@ public class MainLayoutController {
 	 */
 	@FXML
 	private void handleOpen() {
-		final FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Choose the Saved Path");
-		File file = fileChooser.showOpenDialog(open.getScene().getWindow());
+		final DirectoryChooser dChooser = new DirectoryChooser();
+		dChooser.setTitle("Choose the Saved Path");
+
+		File defaultDirectory = new File("d:\\");
+		dChooser.setInitialDirectory(defaultDirectory);
+		File file = dChooser.showDialog(open.getScene().getWindow());
 		if (file != null) {
 			localAddress.setText(file.getAbsolutePath());
 		}
