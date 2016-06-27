@@ -43,6 +43,7 @@ public class DownloadWorker extends RecursiveAction {
 	private AtomicLong current; // the current position
 
 	/**
+	 * DownloadWorker
 	 * 
 	 * @param start
 	 * @param end
@@ -157,6 +158,7 @@ public class DownloadWorker extends RecursiveAction {
 	public String getKey() {
 		return key;
 	}
+
 	//
 	// private static void addHeader(URLConnection connection) {
 	// connection.setRequestProperty("User-Agent",
