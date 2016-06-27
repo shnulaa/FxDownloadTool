@@ -13,7 +13,7 @@
         <tabs>
           <Tab text="下载">
                <content>
-                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="309.0" prefWidth="349.0">
+                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="318.0" prefWidth="349.0">
                      <children>
                         <Label fx:id="addressLab" layoutX="13.0" layoutY="17.0" text="下载地址" />
                         <TextField fx:id="address" layoutX="70.0" layoutY="13.0" prefHeight="25.0" prefWidth="258.0" />
@@ -21,7 +21,9 @@
                         <Button fx:id="open" layoutX="288.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleOpen" text="打开" />
                         <TextField fx:id="localAddress" layoutX="70.0" layoutY="42.0" prefHeight="25.0" prefWidth="207.0" />
                         <Pane fx:id="processPane" layoutX="13.0" layoutY="76.0" prefHeight="200.0" prefWidth="319.0" />
-                        <ProgressBar layoutX="20.0" layoutY="276.0" prefHeight="18.0" prefWidth="234.0" progress="0.0" />
+                        <ProgressBar fx:id="process" layoutX="20.0" layoutY="281.0" prefHeight="18.0" prefWidth="216.0" progress="0.0" />
+                        <Label fx:id="speedLab" layoutX="283.0" layoutY="281.0" />
+                        <Label fx:id="percentLab" layoutX="238.0" layoutY="281.0" />
                      </children>
                   </Pane>
                </content>

@@ -28,9 +28,14 @@ public class Manager implements Serializable {
 	private transient long size;
 
 	private transient ChangedListener listener;
+	private transient ProcessChangedListener plistener;
 
 	public void addListener(ChangedListener listener) {
 		this.setListener(listener);
+	}
+
+	public void addProcessListener(ProcessChangedListener listener) {
+		this.setPlistener(listener);
 	}
 
 	public void clear() {
@@ -106,6 +111,14 @@ public class Manager implements Serializable {
 
 	public void setListener(ChangedListener listener) {
 		this.listener = listener;
+	}
+
+	public ProcessChangedListener getPlistener() {
+		return plistener;
+	}
+
+	public void setPlistener(ProcessChangedListener plistener) {
+		this.plistener = plistener;
 	}
 
 }

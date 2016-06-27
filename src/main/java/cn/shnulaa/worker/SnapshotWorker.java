@@ -23,9 +23,11 @@ public class SnapshotWorker implements Runnable {
 	public void run() {
 		try {
 			double current = 100 * (Double.valueOf(m.alreadyRead.get()) / size);
-			System.out.print(ProgressBar.showBarByPoint(current, 100, 70, m.getPerSecondSpeed(), true));
+			long speed = m.getPerSecondSpeed();
+			System.out.print(ProgressBar.showBarByPoint(current, 100, 70, speed, true));
 			System.out.flush();
 			writeObject(m, sFile);
+			m.getPlistener().change(current / 100, speed, Thread.currentThread());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

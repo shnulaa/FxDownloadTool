@@ -7,10 +7,13 @@ import org.apache.commons.lang3.StringUtils;
 import cn.shnulaa.main.ForkJoinDownload;
 import cn.shnulaa.manager.ChangedListener;
 import cn.shnulaa.manager.Manager;
+import cn.shnulaa.manager.ProcessChangedListener;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -32,6 +35,15 @@ public class MainLayoutController {
 
 	@FXML
 	private Pane processPane;
+
+	@FXML
+	private ProgressBar process;
+
+	@FXML
+	private Label speedLab;
+
+	@FXML
+	private Label percentLab;
 
 	/** array */
 	private Rectangle[][] array; // save the Rectangle object to array
@@ -69,6 +81,17 @@ public class MainLayoutController {
 			@Override
 			public void change(final long current, final Thread t) {
 				changeColor(current, m.getSize());
+			}
+		});
+
+		m.addProcessListener(new ProcessChangedListener() {
+			@Override
+			public void change(double rate, long speed, Thread t) {
+				Platform.runLater(() -> {
+					process.progressProperty().set(rate);
+					percentLab.setText(String.valueOf(rate * 100) + "%");
+					speedLab.setText(String.valueOf(speed) + "KB/S");
+				});
 			}
 		});
 	}
