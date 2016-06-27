@@ -28,7 +28,7 @@ public class DownloadWorker extends RecursiveAction {
 	/** one thread download max retry count **/
 	private static final int THREAD_MAX_RETRY_COUNT = 10;
 	/** the instance of Manager **/
-	private static final Manager m = Manager.getInstance();
+	private final Manager m = Manager.getInstance();
 
 	/**
 	 * serialVersionUID

@@ -38,7 +38,7 @@ public class MainLayoutController {
 	private static final int WIDTH = 100;
 	private static final int HEIGHT = 100;
 	private static final int PIXELS = WIDTH * HEIGHT;
-	private Manager m = Manager.getInstance();
+	private final Manager m = Manager.getInstance();
 
 	/**
 	 * constructor
@@ -79,9 +79,9 @@ public class MainLayoutController {
 	 * @param current
 	 * @param totol
 	 */
-	public void changeColor(final long current, final long totol) {
+	public void changeColor(final long current, final long total) {
 		Platform.runLater(() -> {
-			int percent = (int) (current * PIXELS / totol);
+			int percent = (int) (current * PIXELS / total);
 
 			int x = (int) percent / 100;
 			int y = (int) percent % 100;
@@ -90,6 +90,9 @@ public class MainLayoutController {
 				return;
 			}
 			final Rectangle r = array[x][y];
+			if (r == null) {
+				return;
+			}
 			synchronized (r) {
 				if (r.getFill() != Color.RED) {
 					// System.out.println(percent);
