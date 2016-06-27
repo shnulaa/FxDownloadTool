@@ -84,9 +84,6 @@ public final class ForkJoinDownload {
 
 			connection = url.openConnection();
 			if (connection instanceof HttpURLConnection) {
-				// if (useHeader) {
-				// addHeader(connection);
-				// }
 
 				int code = ((HttpURLConnection) connection).getResponseCode();
 				System.out.println("response code: " + code);

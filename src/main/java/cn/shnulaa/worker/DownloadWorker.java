@@ -9,7 +9,6 @@ import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.atomic.AtomicLong;
 
-import cn.shnulaa.manager.ChangedListener;
 import cn.shnulaa.manager.Manager;
 
 /**

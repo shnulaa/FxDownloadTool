@@ -81,7 +81,6 @@ public class MainLayoutController {
 		Platform.runLater(() -> {
 			int percent = (int) (current * PIXELS / totol);
 
-			System.out.println(percent);
 			int x = (int) percent / 100;
 			int y = (int) percent % 100;
 			if (x >= 100 || y >= 100) {
@@ -91,6 +90,7 @@ public class MainLayoutController {
 			final Rectangle r = array[x][y];
 			synchronized (r) {
 				if (r.getFill() != Color.RED) {
+					System.out.println(percent);
 					array[x][y].setFill(Color.RED);
 				}
 			}
