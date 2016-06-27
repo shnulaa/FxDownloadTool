@@ -21,7 +21,6 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import shnulaa.fx.controller.MainLayoutController;
 
 public class MainGui extends Application {
 	private static Logger log = LoggerFactory.getLogger(MainGui.class);
@@ -29,7 +28,7 @@ public class MainGui extends Application {
 	private Stage primaryStage;
 	private Scene rootScene;
 	private TrayIcon trayIcon;
-	private MainLayoutController controller;
+	// private MainLayoutController controller;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -57,7 +56,7 @@ public class MainGui extends Application {
 
 			addToTray();
 
-			this.controller = mainLayoutLoader.getController();
+			// this.controller = mainLayoutLoader.getController();
 
 			primaryStage.getIcons().add(new Image(MainGui.class.getResource("/image/icon1.png").toString()));
 			primaryStage.show();

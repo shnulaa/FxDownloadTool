@@ -46,23 +46,6 @@ public class MainLayoutController {
 	public MainLayoutController() {
 	}
 
-	/**
-	 * clearColor
-	 */
-	private void clearColor() {
-		if (array == null) {
-			return;
-		}
-		for (int j = 0; j < WIDTH; j++) {
-			for (int i = 0; i < HEIGHT; i++) {
-				final Rectangle r = array[j][i];
-				if (r != null) {
-					r.setFill(Color.WHITE);
-				}
-			}
-		}
-	}
-
 	@FXML
 	private void initialize() {
 		address.setText("http://down.360safe.com/cse/360cse_8.5.0.126.exe");
@@ -88,7 +71,6 @@ public class MainLayoutController {
 				changeColor(current, m.getSize());
 			}
 		});
-
 	}
 
 	/**
@@ -157,6 +139,23 @@ public class MainLayoutController {
 		File file = fileChooser.showOpenDialog(open.getScene().getWindow());
 		if (file != null) {
 			localAddress.setText(file.getAbsolutePath());
+		}
+	}
+
+	/**
+	 * clearColor
+	 */
+	private void clearColor() {
+		if (array == null) {
+			return;
+		}
+		for (int j = 0; j < WIDTH; j++) {
+			for (int i = 0; i < HEIGHT; i++) {
+				final Rectangle r = array[j][i];
+				if (r != null) {
+					r.setFill(Color.WHITE);
+				}
+			}
 		}
 	}
 
