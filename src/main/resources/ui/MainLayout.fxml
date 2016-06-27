@@ -18,7 +18,7 @@
                         <Label fx:id="addressLab" layoutX="13.0" layoutY="17.0" text="下载地址" />
                         <TextField fx:id="address" layoutX="70.0" layoutY="13.0" prefHeight="25.0" prefWidth="258.0" />
                         <Label fx:id="localAddressLab" layoutX="13.0" layoutY="46.0" text="保存路径" />
-                        <Button fx:id="open" layoutX="288.0" layoutY="42.0" mnemonicParsing="false" text="打开" />
+                        <Button fx:id="open" layoutX="288.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleOpen" text="打开" />
                         <TextField fx:id="localAddress" layoutX="70.0" layoutY="42.0" prefHeight="25.0" prefWidth="207.0" />
                         <Pane fx:id="processPane" layoutX="13.0" layoutY="76.0" prefHeight="200.0" prefWidth="319.0" />
                      </children>

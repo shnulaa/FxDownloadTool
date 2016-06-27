@@ -1,5 +1,7 @@
 package shnulaa.fx.controller;
 
+import java.io.File;
+
 import org.apache.commons.lang3.StringUtils;
 
 import cn.shnulaa.main.ForkJoinDownload;
@@ -13,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
 
 public class MainLayoutController {
 	@FXML
@@ -127,7 +130,7 @@ public class MainLayoutController {
 
 		String localAddressTxt = localAddress.getText();
 		if (StringUtils.isEmpty(localAddressTxt)) {
-			showAlert("Download Tools", "Local saved Address must be specified..", Alert.AlertType.ERROR);
+			showAlert("File Download Tools", "Local saved Address must be specified..", Alert.AlertType.ERROR);
 			return;
 		}
 
@@ -140,13 +143,25 @@ public class MainLayoutController {
 				m.clear();
 			} catch (Throwable e) {
 				e.printStackTrace();
-				// showAlert("Download Tools", "Exception occurred, message: " +
-				// e.getMessage(), Alert.AlertType.ERROR);
 			}
 		}).start();
 	}
 
 	/**
+	 * The action for handle the button of Open File
+	 */
+	@FXML
+	private void handleOpen() {
+		final FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Choose the Saved Path");
+		File file = fileChooser.showOpenDialog(open.getScene().getWindow());
+		if (file != null) {
+			localAddress.setText(file.getAbsolutePath());
+		}
+	}
+
+	/**
+	 * showAlert
 	 * 
 	 * @param title
 	 * @param message
@@ -160,5 +175,4 @@ public class MainLayoutController {
 		a.setContentText(message);
 		a.showAndWait();
 	}
-
 }
