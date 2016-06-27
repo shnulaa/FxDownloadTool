@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="371.0" prefWidth="364.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shnulaa.fx.controller.MainLayoutController">
+   <children>
+      <TabPane layoutX="14.0" prefHeight="335.0" prefWidth="345.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="下载">
+               <content>
+                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="290.0" prefWidth="349.0">
+                     <children>
+                        <Label fx:id="addressLab" layoutX="13.0" layoutY="17.0" text="下载地址" />
+                        <TextField fx:id="address" layoutX="70.0" layoutY="13.0" prefHeight="25.0" prefWidth="258.0" />
+                        <Label fx:id="localAddressLab" layoutX="13.0" layoutY="46.0" text="保存路径" />
+                        <Button fx:id="open" layoutX="288.0" layoutY="42.0" mnemonicParsing="false" text="打开" />
+                        <TextField fx:id="localAddress" layoutX="70.0" layoutY="42.0" prefHeight="25.0" prefWidth="207.0" />
+                        <Pane fx:id="processPane" layoutX="13.0" layoutY="76.0" prefHeight="200.0" prefWidth="319.0" />
+                     </children>
+                  </Pane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <Button fx:id="download" layoutX="30.0" layoutY="323.0" mnemonicParsing="false" onAction="#handleDownload" text="下载" />
+   </children>
+</Pane>
