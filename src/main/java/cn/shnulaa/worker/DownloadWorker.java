@@ -86,8 +86,7 @@ public class DownloadWorker extends RecursiveAction {
 	}
 
 	/**
-	 * 
-	 * 
+	 * execute
 	 */
 	private void execute() {
 		int retryCount = 0;

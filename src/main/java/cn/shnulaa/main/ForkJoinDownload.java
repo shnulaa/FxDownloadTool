@@ -68,13 +68,9 @@ public final class ForkJoinDownload {
 		}
 
 		String fileName = downloadURL.substring(downloadURL.lastIndexOf("/") + 1);
-		if (args[3] != null || !args[3].isEmpty()) {
+		if (args[3] != null && !args[3].isEmpty()) {
 			fileName = args[3];
 		}
-
-		// if (args.length > 3 && (args[4] != null || !args[4].isEmpty())) {
-		// useHeader = true;
-		// }
 
 		final URL url = new URL(downloadURL);
 		HttpURLConnection.setFollowRedirects(true);
@@ -124,11 +120,12 @@ public final class ForkJoinDownload {
 					if (s != null) {
 						s.shutdown();
 					}
-					s.awaitTermination(30, TimeUnit.HOURS);
 
 					if (sFile.exists()) {
-						sFile.deleteOnExit();
+						sFile.delete();
 					}
+					// s.awaitTermination(30, TimeUnit.HOURS);
+
 				}
 
 				System.out.print(ProgressBar.showBarByPoint(100, 100, 70, m.getPerSecondSpeed(), true));

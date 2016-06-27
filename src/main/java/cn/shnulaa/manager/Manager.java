@@ -33,6 +33,15 @@ public class Manager implements Serializable {
 		this.setListener(listener);
 	}
 
+	public void clear() {
+		if (map != null) {
+			map.clear();
+		}
+		alreadyRead.set(0);
+		preAlreadyRead.set(0);
+		size = 0;
+	}
+
 	/** is the mode recovery **/
 	public volatile boolean recovery = false;
 

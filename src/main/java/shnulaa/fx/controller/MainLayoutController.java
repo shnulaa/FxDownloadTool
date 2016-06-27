@@ -43,6 +43,23 @@ public class MainLayoutController {
 	public MainLayoutController() {
 	}
 
+	/**
+	 * clearColor
+	 */
+	private void clearColor() {
+		if (array == null) {
+			return;
+		}
+		for (int j = 0; j < WIDTH; j++) {
+			for (int i = 0; i < HEIGHT; i++) {
+				final Rectangle r = array[j][i];
+				if (r != null) {
+					r.setFill(Color.WHITE);
+				}
+			}
+		}
+	}
+
 	@FXML
 	private void initialize() {
 		address.setText("http://down.360safe.com/cse/360cse_8.5.0.126.exe");
@@ -98,7 +115,7 @@ public class MainLayoutController {
 	}
 
 	/**
-	 * the action for handle the button of listen
+	 * the action for handle the button of Download
 	 */
 	@FXML
 	private void handleDownload() {
@@ -114,24 +131,27 @@ public class MainLayoutController {
 			return;
 		}
 
-		final String[] args = { addressTxt, "15", localAddressTxt, "1.exe" };
+		clearColor();
+		final String[] args = { addressTxt, "15", localAddressTxt, null };
 		new Thread(() -> {
 			try {
 				ForkJoinDownload.main(args);
+				System.out.println("Clear..");
+				m.clear();
 			} catch (Throwable e) {
-				showAlert("Download Tools", "Exception occurred, message: " + e.getMessage(), Alert.AlertType.ERROR);
+				e.printStackTrace();
+				// showAlert("Download Tools", "Exception occurred, message: " +
+				// e.getMessage(), Alert.AlertType.ERROR);
 			}
 		}).start();
 	}
 
-	public Rectangle[][] getArray() {
-		return array;
-	}
-
-	public void setArray(Rectangle[][] array) {
-		this.array = array;
-	}
-
+	/**
+	 * 
+	 * @param title
+	 * @param message
+	 * @param type
+	 */
 	private void showAlert(String title, String message, Alert.AlertType type) {
 		Alert a = new Alert(type);
 		a.setTitle(title);
