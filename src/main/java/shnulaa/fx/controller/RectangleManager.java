@@ -29,16 +29,15 @@ public class RectangleManager {
 	public void changeColor(final long current, final long total) {
 		Platform.runLater(() -> {
 
-			System.out.println(total);
 			int percent = (int) (current * PIXELS / total);
-
-			System.out.println(percent);
 
 			int x = (int) percent / WIDTH;
 			int y = (int) percent % HEIGHT;
 			if (x >= 100 || y >= 100) {
 				return;
 			}
+
+			System.out.println(String.format("percent:%s, x:%s, y:%s", percent, x, y));
 			final Rectangle r = array[x][y];
 			if (r == null) {
 				return;
@@ -55,7 +54,7 @@ public class RectangleManager {
 	 * newInstance
 	 * 
 	 * @param array
-	 * @return
+	 * @return new instance of RectangleManager
 	 */
 	public static RectangleManager newInstance(final Rectangle[][] array) {
 		return new RectangleManager(array);
