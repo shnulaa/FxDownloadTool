@@ -8,6 +8,12 @@ import java.io.OutputStream;
 import cn.shnulaa.bar.ProgressBar;
 import cn.shnulaa.manager.Manager;
 
+/**
+ * SnapshotWorker
+ * 
+ * @author liuyq
+ *
+ */
 public class SnapshotWorker implements Runnable {
 	private File sFile;
 	private long size;

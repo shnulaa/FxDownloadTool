@@ -10,6 +10,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.LockSupport;
 
+import cn.shnulaa.listener.ChangedListener;
+import cn.shnulaa.listener.ProcessChangedListener;
 import cn.shnulaa.worker.DownloadWorker;
 
 /**

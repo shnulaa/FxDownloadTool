@@ -4,10 +4,10 @@ import java.io.File;
 
 import org.apache.commons.lang3.StringUtils;
 
+import cn.shnulaa.listener.ChangedListener;
+import cn.shnulaa.listener.ProcessChangedListener;
 import cn.shnulaa.main.ForkJoinDownload;
-import cn.shnulaa.manager.ChangedListener;
 import cn.shnulaa.manager.Manager;
-import cn.shnulaa.manager.ProcessChangedListener;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;

@@ -1,4 +1,4 @@
-package cn.shnulaa.manager;
+package cn.shnulaa.listener;
 
 public interface ProcessChangedListener {
 

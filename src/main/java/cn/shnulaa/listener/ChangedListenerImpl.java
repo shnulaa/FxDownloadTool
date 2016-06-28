@@ -1,11 +1,9 @@
-package cn.shnulaa.manager;
+package cn.shnulaa.listener;
 
 public class ChangedListenerImpl implements ChangedListener {
 
 	@Override
 	public void change(long current, Thread t) {
-		// TODO Auto-generated method stub
-
 	}
 
 }
