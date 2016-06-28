@@ -9,9 +9,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.sun.javafx.application.PlatformImpl;
 
 import javafx.application.Application;
@@ -23,7 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class MainGui extends Application {
-	private static Logger log = LoggerFactory.getLogger(MainGui.class);
+	// private static Logger log = LoggerFactory.getLogger(MainGui.class);
 
 	private Stage primaryStage;
 	private Scene rootScene;
@@ -61,7 +58,9 @@ public class MainGui extends Application {
 			primaryStage.getIcons().add(new Image(MainGui.class.getResource("/image/icon1.png").toString()));
 			primaryStage.show();
 		} catch (IOException e) {
-			log.error("IOException occurred when load MainLayout.fxml..", e);
+
+			e.printStackTrace();
+			// log.error("IOException occurred when load MainLayout.fxml..", e);
 		}
 	}
 
@@ -71,7 +70,8 @@ public class MainGui extends Application {
 
 		// make sure system tray is supported
 		if (!java.awt.SystemTray.isSupported()) {
-			log.warn("No system tray support!");
+			System.out.println("No system tray support!");
+			// log.warn("No system tray support!");
 		}
 
 		final java.awt.SystemTray tray = java.awt.SystemTray.getSystemTray();
@@ -124,9 +124,11 @@ public class MainGui extends Application {
 			trayIcon.setToolTip("Not Connected");
 			tray.add(trayIcon);
 		} catch (IOException e) {
-			log.error("IOException occurred when addToTray..", e);
+			e.printStackTrace();
+			// log.error("IOException occurred when addToTray..", e);
 		} catch (AWTException e) {
-			log.error("AWTException occurred when addToTray..", e);
+			e.printStackTrace();
+			// log.error("AWTException occurred when addToTray..", e);
 		}
 	}
 

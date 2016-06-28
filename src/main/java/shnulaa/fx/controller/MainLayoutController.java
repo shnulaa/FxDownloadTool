@@ -2,8 +2,6 @@ package shnulaa.fx.controller;
 
 import java.io.File;
 
-import org.apache.commons.lang3.StringUtils;
-
 import cn.shnulaa.listener.ChangedListener;
 import cn.shnulaa.listener.ProcessChangedListener;
 import cn.shnulaa.main.ForkJoinDownload;
@@ -113,13 +111,13 @@ public class MainLayoutController {
 	@FXML
 	private void handleDownload() {
 		String addressTxt = address.getText();
-		if (StringUtils.isEmpty(addressTxt)) {
+		if (addressTxt == null || addressTxt.isEmpty()) {
 			showAlert("Download Tools", "address URL must be specified..", Alert.AlertType.ERROR);
 			return;
 		}
 
 		String localAddressTxt = localAddress.getText();
-		if (StringUtils.isEmpty(localAddressTxt)) {
+		if (localAddressTxt == null || localAddressTxt.isEmpty()) {
 			showAlert("File Download Tools", "Local saved Address must be specified..", Alert.AlertType.ERROR);
 			return;
 		}
