@@ -8,7 +8,7 @@ import cn.shnulaa.listener.ChangedListener;
 import cn.shnulaa.listener.ProcessChangedListener;
 import cn.shnulaa.main.ForkJoinDownload;
 import cn.shnulaa.manager.Manager;
-import cn.shnulaa.manager.RectangleManager;
+import cn.shnulaa.manager.UIManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -55,7 +55,7 @@ public class MainLayoutController {
 	@FXML
 	private Label percentLab;
 
-	/** array */
+	/** Rectangle object array */
 	private Rectangle[][] array; // save the Rectangle object to array
 	private static final int WIDTH = 100;
 	private static final int HEIGHT = 100;
@@ -72,6 +72,7 @@ public class MainLayoutController {
 	private void initialize() {
 		address.setText("http://down.360safe.com/cse/360cse_8.5.0.126.exe");
 		localAddress.setText("e:\\");
+		pauseOrResume.setDisable(true);
 
 		this.array = new Rectangle[WIDTH][HEIGHT];
 		for (int j = 0; j < WIDTH; j++) {
@@ -87,12 +88,12 @@ public class MainLayoutController {
 			}
 		}
 
-		RectangleManager rm = RectangleManager.newInstance(array);
+		UIManager uiManager = UIManager.newInstance(array, process, speedLab, percentLab);
 
 		m.addListener(new ChangedListener() {
 			@Override
 			public void change(final long current, final Thread t) {
-				rm.changeColor(current, m.getSize());
+				uiManager.changeColor(current, m.getSize());
 			}
 		});
 
@@ -100,9 +101,7 @@ public class MainLayoutController {
 			@Override
 			public void change(double rate, long speed, Thread t) {
 				Platform.runLater(() -> {
-					process.progressProperty().set(rate);
-					percentLab.setText((int) (rate * 100) + "%");
-					speedLab.setText(String.valueOf(speed) + "KB/S");
+					uiManager.changePercent(rate, speed);
 				});
 			}
 		});
@@ -136,6 +135,8 @@ public class MainLayoutController {
 				e.printStackTrace();
 			}
 		}).start();
+
+		pauseOrResume.setDisable(false);
 	}
 
 	/**
