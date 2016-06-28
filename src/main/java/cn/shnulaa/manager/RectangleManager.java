@@ -1,9 +1,15 @@
-package shnulaa.fx.controller;
+package cn.shnulaa.manager;
 
 import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * RectangleManager
+ * 
+ * @author liuyq
+ *
+ */
 public class RectangleManager {
 
 	private static final int WIDTH = 100;
@@ -37,7 +43,8 @@ public class RectangleManager {
 				return;
 			}
 
-			System.out.println(String.format("percent:%s, x:%s, y:%s", percent, x, y));
+			// System.out.println(String.format("percent:%s, x:%s, y:%s",
+			// percent, x, y));
 			final Rectangle r = array[x][y];
 			if (r == null) {
 				return;

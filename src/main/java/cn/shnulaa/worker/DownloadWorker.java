@@ -23,9 +23,9 @@ import cn.shnulaa.manager.Manager;
 public class DownloadWorker extends RecursiveAction {
 
 	/** the default forkJoin thresholds **/
-	private static final long THRESHOLDS = (1024 * 1024 * 5); // 5M
+	private static final long THRESHOLDS = (1024 * 1024 * 1); // 1M
 	/** one thread download connection timeout **/
-	private static final int THREAD_DOWNLOAD_TIMEOUT = 30000;
+	private static final int THREAD_DOWNLOAD_TIMEOUT = 5000;
 	/** one thread download max retry count **/
 	private static final int THREAD_MAX_RETRY_COUNT = 10;
 	/** the instance of Manager **/

@@ -8,6 +8,7 @@ import cn.shnulaa.listener.ChangedListener;
 import cn.shnulaa.listener.ProcessChangedListener;
 import cn.shnulaa.main.ForkJoinDownload;
 import cn.shnulaa.manager.Manager;
+import cn.shnulaa.manager.RectangleManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
