@@ -6,32 +6,49 @@ import javafx.scene.shape.Rectangle;
 
 public class RectangleManager {
 
+	private static final int WIDTH = 100;
+	private static final int HEIGHT = 100;
+	private static final int PIXELS = WIDTH * HEIGHT;
 	private Rectangle[][] array;
 
+	/**
+	 * RectangleManager
+	 * 
+	 * @param array
+	 */
 	private RectangleManager(Rectangle[][] array) {
 		this.array = array;
 	}
 
 	/**
+	 * changeColor
 	 * 
 	 * @param current
 	 * @param totol
 	 */
-	public void changeColor(final long current, final long totol) {
+	public void changeColor(final long current, final long total) {
 		Platform.runLater(() -> {
-			int percent = (int) (current * 10000 / totol);
-			int x = (int) percent / 100;
-			int y = (int) percent % 100;
-			array[x][y].setFill(Color.RED);
+			int percent = (int) (current * PIXELS / total);
+
+			int x = (int) percent / WIDTH;
+			int y = (int) percent % HEIGHT;
+			if (x >= 100 || y >= 100) {
+				return;
+			}
+			final Rectangle r = array[x][y];
+			if (r == null) {
+				return;
+			}
+			synchronized (r) {
+				if (r.getFill() != Color.RED) {
+					array[x][y].setFill(Color.RED);
+				}
+			}
 		});
 	}
-	//
-	// static class SingletonHolder {
-	// public static final RectangleManager Manager = new RectangleManager();
-	// }
-	//
-	// public static RectangleManager getInstance() {
-	// return SingletonHolder.Manager;
-	// }
+
+	public static RectangleManager newInstance(Rectangle[][] array) {
+		return new RectangleManager(array);
+	}
 
 }

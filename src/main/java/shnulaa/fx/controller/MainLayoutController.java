@@ -58,7 +58,7 @@ public class MainLayoutController {
 	private Rectangle[][] array; // save the Rectangle object to array
 	private static final int WIDTH = 100;
 	private static final int HEIGHT = 100;
-	private static final int PIXELS = WIDTH * HEIGHT;
+	// private static final int PIXELS = WIDTH * HEIGHT;
 	private final Manager m = Manager.getInstance();
 
 	/**
@@ -86,10 +86,12 @@ public class MainLayoutController {
 			}
 		}
 
+		RectangleManager rm = RectangleManager.newInstance(array);
+
 		m.addListener(new ChangedListener() {
 			@Override
 			public void change(final long current, final Thread t) {
-				changeColor(current, m.getSize());
+				rm.changeColor(current, m.getSize());
 			}
 		});
 
@@ -101,34 +103,6 @@ public class MainLayoutController {
 					percentLab.setText((int) (rate * 100) + "%");
 					speedLab.setText(String.valueOf(speed) + "KB/S");
 				});
-			}
-		});
-	}
-
-	/**
-	 * changeColor
-	 * 
-	 * @param current
-	 * @param totol
-	 */
-	public void changeColor(final long current, final long total) {
-		Platform.runLater(() -> {
-			int percent = (int) (current * PIXELS / total);
-
-			int x = (int) percent / 100;
-			int y = (int) percent % 100;
-			if (x >= 100 || y >= 100) {
-				System.err.println("ArrayIndexOutOfBoundsException 100");
-				return;
-			}
-			final Rectangle r = array[x][y];
-			if (r == null) {
-				return;
-			}
-			synchronized (r) {
-				if (r.getFill() != Color.RED) {
-					array[x][y].setFill(Color.RED);
-				}
 			}
 		});
 	}

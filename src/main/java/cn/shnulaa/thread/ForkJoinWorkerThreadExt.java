@@ -6,6 +6,7 @@ import java.util.concurrent.ForkJoinWorkerThread;
 import cn.shnulaa.manager.Manager;
 
 /**
+ * ForkJoinWorkerThreadExt
  * 
  * @author liuyq
  *
@@ -26,5 +27,4 @@ public class ForkJoinWorkerThreadExt extends ForkJoinWorkerThread {
 	protected void onTermination(Throwable exception) {
 		manager.removeThread(this);
 	}
-
 }
