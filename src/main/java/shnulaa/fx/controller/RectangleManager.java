@@ -16,7 +16,7 @@ public class RectangleManager {
 	 * 
 	 * @param array
 	 */
-	private RectangleManager(Rectangle[][] array) {
+	private RectangleManager(final Rectangle[][] array) {
 		this.array = array;
 	}
 
@@ -28,7 +28,11 @@ public class RectangleManager {
 	 */
 	public void changeColor(final long current, final long total) {
 		Platform.runLater(() -> {
+
+			System.out.println(total);
 			int percent = (int) (current * PIXELS / total);
+
+			System.out.println(percent);
 
 			int x = (int) percent / WIDTH;
 			int y = (int) percent % HEIGHT;
@@ -47,7 +51,13 @@ public class RectangleManager {
 		});
 	}
 
-	public static RectangleManager newInstance(Rectangle[][] array) {
+	/**
+	 * newInstance
+	 * 
+	 * @param array
+	 * @return
+	 */
+	public static RectangleManager newInstance(final Rectangle[][] array) {
 		return new RectangleManager(array);
 	}
 
