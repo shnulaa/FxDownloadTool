@@ -118,7 +118,7 @@ public class MainLayoutController {
 
 		String localAddressTxt = localAddress.getText();
 		if (localAddressTxt == null || localAddressTxt.isEmpty()) {
-			showAlert("File Download Tools", "Local saved Address must be specified..", Alert.AlertType.ERROR);
+			showAlert("File Download Tools", "Local saved Path must be specified..", Alert.AlertType.ERROR);
 			return;
 		}
 
