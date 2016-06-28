@@ -20,14 +20,12 @@ public class ForkJoinWorkerThreadFactoryExt implements ForkJoinWorkerThreadFacto
 	}
 
 	private final AtomicInteger index = new AtomicInteger();
-	// private Manager m = Manager.getInstance();
 
 	@Override
 	public ForkJoinWorkerThread newThread(ForkJoinPool pool) {
 		ForkJoinWorkerThread thread = new ForkJoinWorkerThreadExt(pool);
 		thread.setName("ForkJoinThread-" + index.incrementAndGet());
 		thread.setDaemon(true);
-		// m.addThread(thread);
 		return thread;
 	}
 
