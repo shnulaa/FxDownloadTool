@@ -1,11 +1,11 @@
 package cn.shnulaa.manager;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.LockSupport;
@@ -48,11 +48,11 @@ public class Manager implements Serializable {
 	private transient volatile AtomicBoolean pause = new AtomicBoolean(false);
 
 	/** the collections of all the download thread **/
-	public transient List<Thread> threads;
+	public transient Set<Thread> threads;
 
 	private Manager() {
 		this.map = new ConcurrentHashMap<>();
-		this.threads = new ArrayList<>();
+		this.threads = new CopyOnWriteArraySet<>();
 	}
 
 	public Map<String, DownloadWorker> getMap() {
@@ -134,11 +134,16 @@ public class Manager implements Serializable {
 		this.threads.add(t);
 	}
 
+	public void removeThread(Thread t) {
+		this.threads.remove(t);
+	}
+
 	public void resume() {
 		if (this.pause.compareAndSet(true, false)) {
 			for (Thread t : this.threads) {
-				LockSupport.unpark(t);
-
+				if (t != null) {
+					LockSupport.unpark(t);
+				}
 			}
 		}
 	}
@@ -160,11 +165,14 @@ public class Manager implements Serializable {
 	}
 
 	/**
-	 * 
+	 * clear
 	 */
 	public void clear() {
 		if (map != null) {
 			map.clear();
+		}
+		if (threads != null) {
+			threads.clear();
 		}
 		alreadyRead.set(0);
 		preAlreadyRead.set(0);

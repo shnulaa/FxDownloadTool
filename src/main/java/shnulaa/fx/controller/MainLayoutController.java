@@ -20,9 +20,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 
+/**
+ * MainLayoutController
+ * 
+ * @author liuyq
+ *
+ */
 public class MainLayoutController {
 	@FXML
-	private TextField address; // local IP address
+	private TextField address; // download URL address
 
 	@FXML
 	private TextField localAddress; // local IP address
@@ -64,7 +70,7 @@ public class MainLayoutController {
 	@FXML
 	private void initialize() {
 		address.setText("http://down.360safe.com/cse/360cse_8.5.0.126.exe");
-		localAddress.setText("f:\\");
+		localAddress.setText("e:\\");
 
 		this.array = new Rectangle[WIDTH][HEIGHT];
 		for (int j = 0; j < WIDTH; j++) {
@@ -121,7 +127,6 @@ public class MainLayoutController {
 			}
 			synchronized (r) {
 				if (r.getFill() != Color.RED) {
-					// System.out.println(percent);
 					array[x][y].setFill(Color.RED);
 				}
 			}

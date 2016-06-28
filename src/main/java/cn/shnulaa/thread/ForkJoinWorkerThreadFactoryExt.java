@@ -5,8 +5,6 @@ import java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory;
 import java.util.concurrent.ForkJoinWorkerThread;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import cn.shnulaa.manager.Manager;
-
 /**
  * ForkJoinWorkerThreadFactoryExt
  * 
@@ -15,18 +13,21 @@ import cn.shnulaa.manager.Manager;
  */
 public class ForkJoinWorkerThreadFactoryExt implements ForkJoinWorkerThreadFactory {
 
+	/**
+	 * ForkJoinWorkerThreadFactoryExt
+	 */
 	public ForkJoinWorkerThreadFactoryExt() {
 	}
 
 	private final AtomicInteger index = new AtomicInteger();
-	private Manager m = Manager.getInstance();
+	// private Manager m = Manager.getInstance();
 
 	@Override
 	public ForkJoinWorkerThread newThread(ForkJoinPool pool) {
 		ForkJoinWorkerThread thread = new ForkJoinWorkerThreadExt(pool);
 		thread.setName("ForkJoinThread-" + index.incrementAndGet());
 		thread.setDaemon(true);
-		m.addThread(thread);
+		// m.addThread(thread);
 		return thread;
 	}
 
