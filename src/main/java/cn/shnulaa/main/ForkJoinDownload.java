@@ -22,7 +22,7 @@ import cn.shnulaa.worker.SnapshotWorker;
  * "http://184.164.76.104/pukiwiki.20150612.tar.gz");
  * "http://speed.myzone.cn/pc_elive_1.1.rar"); "); <br>
  * "http://down.360safe.com/cse/360cse_8.5.0.126.exe"); <br>
- * * "http://down.360safe.com/cse/360cse_8.5.0.126.exe"); <br>
+ * "http://down.360safe.com/cse/360cse_8.5.0.126.exe"); <br>
  * 
  * ForkJoin download
  * 
@@ -126,7 +126,6 @@ public final class ForkJoinDownload {
 						sFile.delete();
 					}
 					// s.awaitTermination(30, TimeUnit.HOURS);
-
 				}
 
 				System.out.print(ProgressBar.showBarByPoint(100, 100, 70, m.getPerSecondSpeed(), true));
@@ -147,6 +146,12 @@ public final class ForkJoinDownload {
 		}
 	}
 
+	/**
+	 * recovery from the snapshot file
+	 * 
+	 * @param sFile
+	 *            the snapshot file
+	 */
 	private static void recovery(final File sFile) {
 		if (sFile.exists()) {
 			Manager re = readObject(sFile);
@@ -156,13 +161,13 @@ public final class ForkJoinDownload {
 	}
 
 	/**
-	 * readObject
+	 * read the Object from file
 	 * 
 	 * @param path
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	static <T> T readObject(File path) {
+	private static <T> T readObject(File path) {
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path))) {
 			return (T) ois.readObject();
 		} catch (Exception e) {
@@ -171,20 +176,5 @@ public final class ForkJoinDownload {
 		}
 		return null;
 	}
-
-	// log.info("!!!!!!!Thread name: {}, start: {}, end:
-	// {}, current: {}",
-	// Thread.currentThread().getName(), getStart(),
-	// end, current.get());
-
-	// only for test
-	// final byte[] readBytes = new byte[10];
-	// file.read(readBytes);
-	// for (byte b : readBytes) {
-	// if (b != 0) {
-	// System.out.println("file already been written,
-	// position:" + getCurrent());
-	// }
-	// }
 
 }

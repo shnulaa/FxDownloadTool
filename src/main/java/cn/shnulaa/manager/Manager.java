@@ -13,7 +13,7 @@ import java.util.concurrent.locks.LockSupport;
 import cn.shnulaa.worker.DownloadWorker;
 
 /**
- * Manager the DownloadWorker
+ * Singleton instance.
  * 
  * @author liuyq
  * 
@@ -23,40 +23,32 @@ public class Manager implements Serializable {
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 3879351808960296777L;
-	/** key(start-end) value(task info) **/
+	/** key(start-end) value(task info), keep all worker to this map **/
 	private final Map<String, DownloadWorker> map;
 
+	/** the size that already download **/
 	public final AtomicLong alreadyRead = new AtomicLong(0);
+
+	/** the previous size that already download **/
 	public final AtomicLong preAlreadyRead = new AtomicLong(0);
-
-	private transient long size;
-
-	private transient ChangedListener listener;
-	private transient ProcessChangedListener plistener;
-
-	private transient volatile AtomicBoolean pause = new AtomicBoolean(false);
-
-	public transient List<Thread> threads;
-
-	public void addListener(ChangedListener listener) {
-		this.setListener(listener);
-	}
-
-	public void addProcessListener(ProcessChangedListener listener) {
-		this.setPlistener(listener);
-	}
-
-	public void clear() {
-		if (map != null) {
-			map.clear();
-		}
-		alreadyRead.set(0);
-		preAlreadyRead.set(0);
-		size = 0;
-	}
 
 	/** is the mode recovery **/
 	public volatile boolean recovery = false;
+
+	/** download file size **/
+	private transient long size;
+
+	/** the listener of the file size changed **/
+	private transient ChangedListener listener;
+
+	/** the listener of the process changed **/
+	private transient ProcessChangedListener plistener;
+
+	/** the flag represents pause all the download thread **/
+	private transient volatile AtomicBoolean pause = new AtomicBoolean(false);
+
+	/** the collections of all the download thread **/
+	public transient List<Thread> threads;
 
 	private Manager() {
 		this.map = new ConcurrentHashMap<>();
@@ -148,8 +140,34 @@ public class Manager implements Serializable {
 				LockSupport.unpark(t);
 
 			}
-
 		}
+	}
 
+	/**
+	 * 
+	 * @param listener
+	 */
+	public void addListener(ChangedListener listener) {
+		this.setListener(listener);
+	}
+
+	/**
+	 * 
+	 * @param listener
+	 */
+	public void addProcessListener(ProcessChangedListener listener) {
+		this.setPlistener(listener);
+	}
+
+	/**
+	 * 
+	 */
+	public void clear() {
+		if (map != null) {
+			map.clear();
+		}
+		alreadyRead.set(0);
+		preAlreadyRead.set(0);
+		size = 0;
 	}
 }
