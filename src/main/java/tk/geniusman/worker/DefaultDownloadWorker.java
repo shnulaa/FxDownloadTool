@@ -14,30 +14,31 @@ import java.net.URL;
  */
 public class DefaultDownloadWorker extends AbstractDownloadWorker {
 
-    /**
-     * serialVersionUID
-     */
-    private static final long serialVersionUID = -1124747637487107023L;
+  /**
+   * serialVersionUID
+   */
+  private static final long serialVersionUID = -1124747637487107023L;
 
-    /**
-     * DefaultDownloadWorker
-     * 
-     * @param start
-     * @param end
-     * @param fileSize
-     * @param url
-     * @param dFile
-     */
-    public DefaultDownloadWorker(long start, long end, long fileSize, URL url, File dFile, Proxy proxy) {
-        super(start, end, fileSize, url, dFile, proxy);
-    }
+  /**
+   * DefaultDownloadWorker
+   * 
+   * @param start
+   * @param end
+   * @param fileSize
+   * @param url
+   * @param dFile
+   */
+  public DefaultDownloadWorker(long start, long end, long fileSize, URL url, File dFile,
+      Proxy proxy) {
+    super(start, end, fileSize, url, dFile, proxy);
+  }
 
-    @Override
-    public void extractAndExec() {
-        try {
-            execute();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+  @Override
+  public void extractAndExec() {
+    try {
+      execute();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 }
