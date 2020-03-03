@@ -34,7 +34,7 @@ public abstract class AbstractDownloadWorker extends RecursiveAction implements 
   protected File dFile; // the desc file to be saved
   protected AtomicLong current; // the current position
   protected long fileSize;// total file size
-  protected Proxy proxy; // socket proxy
+  protected transient Proxy proxy; // socket proxy
 
   /**
    * AbstractDownloadWorker
