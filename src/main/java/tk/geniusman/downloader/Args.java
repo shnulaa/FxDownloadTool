@@ -162,9 +162,30 @@ public class Args implements Serializable {
 
   private String remoteSshHost;
   private String remoteSshPort;
+  private String remoteSshUser;
   private String remoteSshPass;
   private String remoteForwardPort;
   private String localListningPort;
+
+  /**
+   * 
+   * @param remoteSshHost
+   * @param remoteSshPort
+   * @param remoteSshUser
+   * @param remoteSshPass
+   * @param remoteForwardPort
+   * @param localListningPort
+   */
+  private Args(String remoteSshHost, String remoteSshPort, String remoteSshUser,
+      String remoteSshPass, String remoteForwardPort, String localListningPort) {
+    this.remoteSshHost = remoteSshHost;
+    this.remoteSshPort = remoteSshPort;
+    this.remoteSshUser = remoteSshUser;
+    this.remoteSshPass = remoteSshPass;
+    this.remoteForwardPort = remoteForwardPort;
+    this.localListningPort = localListningPort;
+  }
+
 
   /**
    * Args constructor
@@ -198,6 +219,31 @@ public class Args implements Serializable {
   public static Args newInstance(String downloadUrl, Integer threadNumber, String savedPath,
       String fullFileName, String proxyAddress, String proxyPort) {
     return new Args(downloadUrl, threadNumber, savedPath, fullFileName, proxyAddress, proxyPort);
+  }
+
+  /**
+   * newInstance
+   * 
+   * @param remoteSshHost
+   * @param remoteSshPort
+   * @param remoteSshUser
+   * @param remoteSshPass
+   * @param remoteForwardPort
+   * @param localListningPort
+   * @return
+   */
+  public static Args newInstance(String remoteSshHost, String remoteSshPort, String remoteSshUser,
+      String remoteSshPass, String remoteForwardPort, String localListningPort) {
+    return new Args(remoteSshHost, remoteSshPort, remoteSshUser, remoteSshPass, remoteForwardPort,
+        localListningPort);
+  }
+
+  public String getRemoteSshUser() {
+    return remoteSshUser;
+  }
+
+  public void setRemoteSshUser(String remoteSshUser) {
+    this.remoteSshUser = remoteSshUser;
   }
 
 }

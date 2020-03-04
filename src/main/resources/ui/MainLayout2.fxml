@@ -28,8 +28,10 @@
                         <Button fx:id="portForwardRemote" layoutX="14.0" layoutY="249.0" mnemonicParsing="false" onAction="#handlePortForwardRemote" prefHeight="23.0" prefWidth="88.0" text="Connect" />
                         <Label fx:id="addressLab32" layoutX="8.0" layoutY="121.0" text="Remote Forward Port" />
                         <TextField fx:id="remoteForwardPort" layoutX="144.0" layoutY="116.0" prefHeight="25.0" prefWidth="91.0" />
-                        <TextField fx:id="remoteForwardPort1" layoutX="144.0" layoutY="159.0" prefHeight="25.0" prefWidth="91.0" />
+                        <TextField fx:id="localListningPort" layoutX="144.0" layoutY="159.0" prefHeight="25.0" prefWidth="91.0" />
                         <Label fx:id="addressLab321" layoutX="8.0" layoutY="164.0" text="Local Listning Port" />
+                        <Label fx:id="addressLab3111" layoutX="227.0" layoutY="63.0" text="Remote SSH Pass" />
+                        <TextField fx:id="localPort1" layoutX="328.0" layoutY="63.0" prefHeight="25.0" prefWidth="91.0" />
                      </children>
             </AnchorPane>
           </content>

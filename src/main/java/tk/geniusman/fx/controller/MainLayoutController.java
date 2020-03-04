@@ -20,6 +20,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.StageStyle;
+import tk.geniusman.connector.Connector;
+import tk.geniusman.connector.ConnectorFactory;
+import tk.geniusman.connector.ConnectorType;
 import tk.geniusman.downloader.Args;
 import tk.geniusman.downloader.Downloader;
 import tk.geniusman.downloader.DownloaderFactory;
@@ -107,6 +110,10 @@ public class MainLayoutController {
 
   @FXML
   private TextField localForwardPort;
+
+  @FXML
+  private TextField remoteSshUser;
+
 
   @FXML
   private Button portForwardRemote;
@@ -247,10 +254,15 @@ public class MainLayoutController {
   @FXML
   private void handlePortForwardRemote() throws Exception {
 
-    showAlert("File Download Tools", "address URL must be specified..", Alert.AlertType.ERROR);
-    
-    
-    
+    final Args args =
+        Args.newInstance(remoteSshHost.getText(), remoteSshPort.getText(), remoteSshUser.getText(),
+            remoteSshPass.getText(), remoteForwardPort.getText(), localForwardPort.getText());
+    Connector connector = ConnectorFactory.getInstance(ConnectorType.REMOTE_FORWARD_PORT, args);
+    Executors.newSingleThreadExecutor().submit(connector);
+
+    // showAlert("File Download Tools", "address URL must be specified..", Alert.AlertType.ERROR);
+
+
 
   }
 }
