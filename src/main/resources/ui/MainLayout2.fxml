@@ -12,12 +12,25 @@
   <children>
     <TabPane layoutX="14.0" layoutY="14.0" prefHeight="382.0" prefWidth="428.0" tabClosingPolicy="UNAVAILABLE">
       <tabs>
-        <Tab text="Task List">
+        <Tab text="Port Forwarding Remote">
           <content>
             <AnchorPane id="Content" fx:id="taskListPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <effect>
                 <Bloom />
               </effect>
+                     <children>
+                        <TextField fx:id="remoteSshHost" layoutX="117.0" layoutY="27.0" prefHeight="25.0" prefWidth="91.0" />
+                        <Label fx:id="addressLab3" layoutX="7.0" layoutY="30.0" text="Remote SSH Host" />
+                        <Label fx:id="addressLab31" layoutX="227.0" layoutY="28.0" text="Remote SSH Port" />
+                        <TextField fx:id="remoteSshPort" layoutX="339.0" layoutY="25.0" prefHeight="25.0" prefWidth="53.0" />
+                        <TextField fx:id="localPort" layoutX="117.0" layoutY="63.0" prefHeight="25.0" prefWidth="91.0" />
+                        <Label fx:id="addressLab311" layoutX="8.0" layoutY="68.0" text="Remote SSH Pass" />
+                        <Button fx:id="portForwardRemote" layoutX="14.0" layoutY="249.0" mnemonicParsing="false" onAction="#handlePortForwardRemote" prefHeight="23.0" prefWidth="88.0" text="Connect" />
+                        <Label fx:id="addressLab32" layoutX="8.0" layoutY="121.0" text="Remote Forward Port" />
+                        <TextField fx:id="remoteForwardPort" layoutX="144.0" layoutY="116.0" prefHeight="25.0" prefWidth="91.0" />
+                        <TextField fx:id="remoteForwardPort1" layoutX="144.0" layoutY="159.0" prefHeight="25.0" prefWidth="91.0" />
+                        <Label fx:id="addressLab321" layoutX="8.0" layoutY="164.0" text="Local Listning Port" />
+                     </children>
             </AnchorPane>
           </content>
         </Tab>

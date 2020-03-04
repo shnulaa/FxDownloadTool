@@ -93,6 +93,26 @@ public class MainLayoutController {
   @FXML
   private TextField proxyPort;
 
+  @FXML
+  private TextField remoteSshHost;
+
+  @FXML
+  private TextField remoteSshPort;
+
+  @FXML
+  private TextField remoteSshPass;
+
+  @FXML
+  private TextField remoteForwardPort;
+
+  @FXML
+  private TextField localForwardPort;
+
+  @FXML
+  private Button portForwardRemote;
+
+
+
   /** Rectangle object array */
   private Rectangle[][] array; // save the Rectangle object to array
   private static final int WIDTH = 100;
@@ -222,5 +242,15 @@ public class MainLayoutController {
     a.setResizable(false);
     a.setContentText(message);
     return a.showAndWait();
+  }
+
+  @FXML
+  private void handlePortForwardRemote() throws Exception {
+
+    showAlert("File Download Tools", "address URL must be specified..", Alert.AlertType.ERROR);
+    
+    
+    
+
   }
 }

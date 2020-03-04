@@ -18,6 +18,48 @@ public class Args implements Serializable {
    */
   private static final long serialVersionUID = -2856157124256094457L;
 
+
+  public String getRemoteSshHost() {
+    return remoteSshHost;
+  }
+
+  public void setRemoteSshHost(String remoteSshHost) {
+    this.remoteSshHost = remoteSshHost;
+  }
+
+  public String getRemoteSshPort() {
+    return remoteSshPort;
+  }
+
+  public void setRemoteSshPort(String remoteSshPort) {
+    this.remoteSshPort = remoteSshPort;
+  }
+
+  public String getRemoteSshPass() {
+    return remoteSshPass;
+  }
+
+  public void setRemoteSshPass(String remoteSshPass) {
+    this.remoteSshPass = remoteSshPass;
+  }
+
+  public String getRemoteForwardPort() {
+    return remoteForwardPort;
+  }
+
+  public void setRemoteForwardPort(String remoteForwardPort) {
+    this.remoteForwardPort = remoteForwardPort;
+  }
+
+  public String getLocalListningPort() {
+    return localListningPort;
+  }
+
+  public void setLocalListningPort(String localListningPort) {
+    this.localListningPort = localListningPort;
+  }
+
+
   public String getDownloadUrl() {
     return downloadUrl;
   }
@@ -117,6 +159,12 @@ public class Args implements Serializable {
   private URL url;
   private String proxyAddress;
   private String proxyPort;
+
+  private String remoteSshHost;
+  private String remoteSshPort;
+  private String remoteSshPass;
+  private String remoteForwardPort;
+  private String localListningPort;
 
   /**
    * Args constructor
