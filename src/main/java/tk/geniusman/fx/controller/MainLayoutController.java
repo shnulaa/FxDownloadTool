@@ -109,7 +109,7 @@ public class MainLayoutController {
   private TextField remoteForwardPort;
 
   @FXML
-  private TextField localForwardPort;
+  private TextField localListningPort;
 
   @FXML
   private TextField remoteSshUser;
@@ -253,10 +253,10 @@ public class MainLayoutController {
 
   @FXML
   private void handlePortForwardRemote() throws Exception {
-
+    // showAlert("File Download Tools", "address URL must be specified..", Alert.AlertType.ERROR);
     final Args args =
         Args.newInstance(remoteSshHost.getText(), remoteSshPort.getText(), remoteSshUser.getText(),
-            remoteSshPass.getText(), remoteForwardPort.getText(), localForwardPort.getText());
+            remoteSshPass.getText(), remoteForwardPort.getText(), localListningPort.getText());
     Connector connector = ConnectorFactory.getInstance(ConnectorType.REMOTE_FORWARD_PORT, args);
     Executors.newSingleThreadExecutor().submit(connector);
 
