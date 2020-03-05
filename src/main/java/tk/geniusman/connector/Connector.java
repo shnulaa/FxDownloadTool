@@ -45,6 +45,9 @@ public interface Connector extends Worker {
    * @param args
    * @return
    */
-  default void checkAndSetArgs(final Args args) {}
+  default void checkAndSetArgs(final Args args) {
+    
+    
+  }
 
 }

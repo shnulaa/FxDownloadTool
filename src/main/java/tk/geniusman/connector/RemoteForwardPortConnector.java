@@ -27,6 +27,7 @@ public class RemoteForwardPortConnector extends AbstractConnector {
     super(args);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   protected <T extends ExecutorService> T startMainTask(Args args) throws Exception {
     ExecutorService service = Executors.newSingleThreadExecutor();
