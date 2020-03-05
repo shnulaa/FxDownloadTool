@@ -139,6 +139,14 @@ public class MainLayoutController {
     localAddress.setText("d:\\tools\\");
     pauseOrResume.setDisable(true);
 
+
+    remoteSshHost.setText("122.51.212.235");
+    remoteSshPort.setText("22");
+    remoteSshUser.setText("ubuntu");
+    remoteSshPass.setText("(lyq522095)");
+    remoteForwardPort.setText("1234");
+    localListningPort.setText("7088");
+
     this.array = new Rectangle[WIDTH][HEIGHT];
     uiManager = UIManager.newInstance(array, process, speedLab, percentLab, processPane, type);
     uiManager.init();
@@ -254,14 +262,6 @@ public class MainLayoutController {
   @FXML
   private void handlePortForwardRemote() throws Exception {
     // showAlert("File Download Tools", "address URL must be specified..", Alert.AlertType.ERROR);
-
-    remoteSshHost.setText("122.51.212.235");
-    remoteSshPort.setText("22");
-    remoteSshUser.setText("ubuntu");
-    remoteSshPass.setText("(lyq522095)");
-    remoteForwardPort.setText("1234");
-    localListningPort.setText("7088");
-
     final Args args =
         Args.newInstance(remoteSshHost.getText(), remoteSshPort.getText(), remoteSshUser.getText(),
             remoteSshPass.getText(), remoteForwardPort.getText(), localListningPort.getText());
