@@ -277,15 +277,28 @@ public class MainLayoutController {
   @FXML
   private void handleAddPortForward() throws Exception {
 
+    String remoteForwardPortTxt = remoteForwardPort.getText();
+    if (remoteForwardPortTxt == null || remoteForwardPortTxt.isEmpty()) {
+      showAlert("Port Forwarding Remote", "address URL must be specified..", Alert.AlertType.ERROR);
+      return;
+    }
+
+
+
     portMappingList.getItems().add("1 -> 1");
 
   }
 
   @FXML
   private void handleDeleteMapping() throws Exception {
-    // portMappingList.select
 
-    // showAlert("Port Forwarding Remote", "handleDeleteMapping", Alert.AlertType.ERROR);
+    int selectedIdx = portMappingList.getSelectionModel().getSelectedIndex();
+    if (selectedIdx != -1) {
+      portMappingList.getItems().remove(selectedIdx);
+    } else {
+      showAlert("Port Forwarding Remote", "Please select at least one item.",
+          Alert.AlertType.ERROR);
+    }
   }
 
 }
