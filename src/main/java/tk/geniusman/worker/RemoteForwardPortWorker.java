@@ -64,8 +64,8 @@ public class RemoteForwardPortWorker implements Worker {
       // int assignedPort = session.setPortForwardingL(1234, "122.51.212.235", 22);
       // System.out.println(assignedPort);
 
-      session.setPortForwardingR(Integer.valueOf(args.getRemoteForwardPort()),
-          args.getRemoteSshHost(), Integer.valueOf(args.getLocalListningPort()));
+      // session.setPortForwardingR(Integer.valueOf(args.getRemoteForwardPort()),
+      // args.getRemoteSshHost(), Integer.valueOf(args.getLocalListningPort()));
 
 
 

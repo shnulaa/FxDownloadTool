@@ -25,13 +25,16 @@
                         <TextField fx:id="remoteSshPort" layoutX="339.0" layoutY="25.0" prefHeight="25.0" prefWidth="53.0" />
                         <TextField fx:id="remoteSshPass" layoutX="117.0" layoutY="63.0" prefHeight="25.0" prefWidth="91.0" />
                         <Label fx:id="addressLab311" layoutX="8.0" layoutY="68.0" text="Remote SSH Pass" />
-                        <Button fx:id="portForwardRemote" layoutX="14.0" layoutY="249.0" mnemonicParsing="false" onAction="#handlePortForwardRemote" prefHeight="23.0" prefWidth="88.0" text="Connect" />
-                        <Label fx:id="addressLab32" layoutX="8.0" layoutY="121.0" text="Remote Forward Port" />
-                        <TextField fx:id="remoteForwardPort" layoutX="144.0" layoutY="116.0" prefHeight="25.0" prefWidth="91.0" />
-                        <TextField fx:id="localListningPort" layoutX="144.0" layoutY="159.0" prefHeight="25.0" prefWidth="91.0" />
-                        <Label fx:id="addressLab321" layoutX="8.0" layoutY="164.0" text="Local Listning Port" />
-                        <Label fx:id="addressLab3111" layoutX="227.0" layoutY="63.0" text="Remote SSH User" />
+                        <Button fx:id="connectRemote" layoutX="14.0" layoutY="109.0" mnemonicParsing="false" onAction="#handleConnectRemote" prefHeight="23.0" prefWidth="88.0" text="Connect" />
+                        <Label fx:id="addressLab32" layoutX="8.0" layoutY="166.0" text="Remote Forward Port" />
+                        <TextField fx:id="remoteForwardPort" layoutX="144.0" layoutY="161.0" prefHeight="25.0" prefWidth="91.0" />
+                        <TextField fx:id="localListningPort" layoutX="144.0" layoutY="204.0" prefHeight="25.0" prefWidth="91.0" />
+                        <Label fx:id="addressLab321" layoutX="8.0" layoutY="209.0" text="Local Listning Port" />
+                        <Label fx:id="addressLab3111" layoutX="227.0" layoutY="68.0" text="Remote SSH User" />
                         <TextField fx:id="remoteSshUser" layoutX="328.0" layoutY="63.0" prefHeight="25.0" prefWidth="91.0" />
+                        <Button fx:id="addPortForward" layoutX="4.0" layoutY="280.0" mnemonicParsing="false" onAction="#handleAddPortForward" prefHeight="23.0" prefWidth="115.0" text="Mapping Port" />
+                        <ListView fx:id="portMappingList" layoutX="263.0" layoutY="157.0" prefHeight="146.0" prefWidth="153.0" />
+                        <Button fx:id="deleteMapping" layoutX="144.0" layoutY="280.0" mnemonicParsing="false" onAction="#handleDeleteMapping" prefHeight="23.0" prefWidth="88.0" text="Delete Mapping" />
                      </children>
             </AnchorPane>
           </content>

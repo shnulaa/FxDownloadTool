@@ -15,6 +15,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -114,11 +115,17 @@ public class MainLayoutController {
   @FXML
   private TextField remoteSshUser;
 
+  @FXML
+  private Button connectRemote;
 
   @FXML
-  private Button portForwardRemote;
+  private Button addPortForward;
 
+  @FXML
+  private Button deleteMapping;
 
+  @FXML
+  private ListView portMappingList;
 
   /** Rectangle object array */
   private Rectangle[][] array; // save the Rectangle object to array
@@ -139,13 +146,12 @@ public class MainLayoutController {
     localAddress.setText("d:\\tools\\");
     pauseOrResume.setDisable(true);
 
-
     remoteSshHost.setText("122.51.212.235");
     remoteSshPort.setText("22");
     remoteSshUser.setText("ubuntu");
     remoteSshPass.setText("(lyq522095)");
-    remoteForwardPort.setText("1234");
-    localListningPort.setText("7088");
+    // remoteForwardPort.setText("1234");
+    // localListningPort.setText("7088");
 
     this.array = new Rectangle[WIDTH][HEIGHT];
     uiManager = UIManager.newInstance(array, process, speedLab, percentLab, processPane, type);
@@ -260,12 +266,26 @@ public class MainLayoutController {
   }
 
   @FXML
-  private void handlePortForwardRemote() throws Exception {
-    // showAlert("File Download Tools", "address URL must be specified..", Alert.AlertType.ERROR);
+  private void handleConnectRemote() throws Exception {
     final Args args =
         Args.newInstance(remoteSshHost.getText(), remoteSshPort.getText(), remoteSshUser.getText(),
             remoteSshPass.getText(), remoteForwardPort.getText(), localListningPort.getText());
     Connector connector = ConnectorFactory.getInstance(ConnectorType.REMOTE_FORWARD_PORT, args);
     Executors.newSingleThreadExecutor().submit(connector);
   }
+
+  @FXML
+  private void handleAddPortForward() throws Exception {
+
+    portMappingList.getItems().add("1 -> 1");
+
+  }
+
+  @FXML
+  private void handleDeleteMapping() throws Exception {
+    // portMappingList.select
+
+    // showAlert("Port Forwarding Remote", "handleDeleteMapping", Alert.AlertType.ERROR);
+  }
+
 }
