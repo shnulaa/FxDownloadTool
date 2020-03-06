@@ -11,17 +11,19 @@ import tk.geniusman.manager.Manager;
  *
  */
 public interface Worker extends Runnable, Serializable {
-    /** the instance of Manager **/
-    static final Manager m = Manager.getInstance();
+  /** the instance of Manager **/
+  static final Manager m = Manager.getInstance();
+  // static final UIManager um = UIManager.getInstance();
 
-    @Override
-    default public void run() {
-        extractAndExec();
-    }
 
-    /**
-     * extract and execute the task
-     */
-    void extractAndExec();
+  @Override
+  default public void run() {
+    extractAndExec();
+  }
+
+  /**
+   * extract and execute the task
+   */
+  void extractAndExec();
 
 }

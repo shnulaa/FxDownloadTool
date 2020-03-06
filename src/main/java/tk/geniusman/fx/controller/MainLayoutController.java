@@ -267,6 +267,5 @@ public class MainLayoutController {
             remoteSshPass.getText(), remoteForwardPort.getText(), localListningPort.getText());
     Connector connector = ConnectorFactory.getInstance(ConnectorType.REMOTE_FORWARD_PORT, args);
     Executors.newSingleThreadExecutor().submit(connector);
-
   }
 }
