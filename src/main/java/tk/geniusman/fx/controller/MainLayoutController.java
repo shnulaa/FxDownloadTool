@@ -13,15 +13,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.StageStyle;
-import tk.geniusman.connector.Connector;
 import tk.geniusman.connector.ConnectorFactory;
 import tk.geniusman.connector.ConnectorType;
 import tk.geniusman.downloader.Args;
@@ -30,6 +29,7 @@ import tk.geniusman.downloader.DownloaderFactory;
 import tk.geniusman.downloader.Type;
 import tk.geniusman.manager.Manager;
 import tk.geniusman.manager.UIManager;
+import tk.geniusman.worker.Worker;
 
 /**
  * MainLayoutController
@@ -270,22 +270,31 @@ public class MainLayoutController {
     final Args args =
         Args.newInstance(remoteSshHost.getText(), remoteSshPort.getText(), remoteSshUser.getText(),
             remoteSshPass.getText(), remoteForwardPort.getText(), localListningPort.getText());
-    Connector connector = ConnectorFactory.getInstance(ConnectorType.REMOTE_FORWARD_PORT, args);
+    Worker connector = ConnectorFactory.getInstance(ConnectorType.SESSION_CONNECT, args);
     Executors.newSingleThreadExecutor().submit(connector);
   }
 
   @FXML
   private void handleAddPortForward() throws Exception {
-
     String remoteForwardPortTxt = remoteForwardPort.getText();
     if (remoteForwardPortTxt == null || remoteForwardPortTxt.isEmpty()) {
-      showAlert("Port Forwarding Remote", "address URL must be specified..", Alert.AlertType.ERROR);
+      showAlert("Port Forwarding Remote", "remoteForwardPort must be specified..",
+          Alert.AlertType.ERROR);
       return;
     }
 
-
-
-    portMappingList.getItems().add("1 -> 1");
+    String localListningPortTxt = localListningPort.getText();
+    if (localListningPortTxt == null || localListningPortTxt.isEmpty()) {
+      showAlert("Port Forwarding Remote", "localListningPort must be specified..",
+          Alert.AlertType.ERROR);
+      return;
+    }
+    final Args args =
+        Args.newInstance(remoteSshHost.getText(), remoteSshPort.getText(), remoteSshUser.getText(),
+            remoteSshPass.getText(), remoteForwardPort.getText(), localListningPort.getText());
+    Worker connector = ConnectorFactory.getInstance(ConnectorType.REMOTE_FORWARD_PORT, args);
+    Executors.newSingleThreadExecutor().submit(connector);
+    portMappingList.getItems().add(localListningPortTxt + " -> " + remoteForwardPortTxt);
 
   }
 

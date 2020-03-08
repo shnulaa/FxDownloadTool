@@ -3,6 +3,7 @@ package tk.geniusman.connector;
 import java.lang.reflect.Constructor;
 
 import tk.geniusman.downloader.Args;
+import tk.geniusman.worker.Worker;
 
 /**
  * DownloaderFactory
@@ -18,10 +19,10 @@ public class ConnectorFactory {
    * @param type
    * @return the instance of downloader
    */
-  public static Connector getInstance(ConnectorType type, Args args) throws Exception {
-    Class<? extends Connector> clazz = type.getClazz();
-    Constructor<? extends Connector> c = clazz.getDeclaredConstructor(Args.class);
-    Connector downloader = c.newInstance(args);
+  public static Worker getInstance(ConnectorType type, Args args) throws Exception {
+    Class<? extends Worker> clazz = type.getClazz();
+    Constructor<? extends Worker> c = clazz.getDeclaredConstructor(Args.class);
+    Worker downloader = c.newInstance(args);
     return downloader;
   }
 }
