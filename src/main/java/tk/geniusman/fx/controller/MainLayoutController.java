@@ -109,7 +109,8 @@ public class MainLayoutController {
 
     @FXML
     private void initialize() {
-        address.setText("http://down.360safe.com/cse/360cse_8.5.0.126.exe");
+        address.setText(
+                "https://mirrors.bfsu.edu.cn/apache/zookeeper/zookeeper-3.7.0/apache-zookeeper-3.7.0-bin.tar.gz");
         localAddress.setText("e:\\tools\\");
         pauseOrResume.setDisable(true);
 

@@ -49,13 +49,13 @@ public abstract class AbstractDownloader implements Downloader {
             // check the remote file is exist
             checkRemoteFile(args);
 
-            // ScheduledExecutorService s = null;
+            ScheduledExecutorService s = null;
             ExecutorService es = null;
             try {
                 recovery(args.getFullTmpPath());
                 m.setSize(args.getFileSize());
                 es = startMainTask(args);
-                // s = startScheduledTask(args);
+                s = startScheduledTask(args);
             } catch (Exception e) {
                 throw e;
             } finally {
@@ -64,9 +64,9 @@ public abstract class AbstractDownloader implements Downloader {
                 }
                 es.awaitTermination(30, TimeUnit.HOURS);
 
-                // if (s != null) {
-                // s.shutdown();
-                // }
+                if (s != null) {
+                    s.shutdown();
+                }
                 if (args.getFullTmpPath().exists()) {
                     args.getFullTmpPath().delete();
                 }
@@ -103,6 +103,7 @@ public abstract class AbstractDownloader implements Downloader {
      * @param size
      * @param sFile
      */
+    // @SuppressWarnings("unused")
     private ScheduledExecutorService startScheduledTask(final Args args) {
         ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();
         s.scheduleAtFixedRate(new SnapshotWorker(args.getFullTmpPath(), args.getFileSize()), 0, 1,
