@@ -111,7 +111,7 @@ public class MainLayoutController {
     private void initialize() {
         address.setText(
                 "https://mirrors.bfsu.edu.cn/apache/zookeeper/zookeeper-3.7.0/apache-zookeeper-3.7.0-bin.tar.gz");
-        localAddress.setText("e:\\tools\\");
+        localAddress.setText("e:\\download\\");
         pauseOrResume.setDisable(true);
 
         this.array = new Rectangle[WIDTH][HEIGHT];

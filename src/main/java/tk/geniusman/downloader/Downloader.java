@@ -136,8 +136,8 @@ public interface Downloader extends Worker {
                 code = ((HttpURLConnection) connection).getResponseCode();
             }
             System.out.println("response code: " + code);
-
-            size = ((HttpsURLConnection) connection).getContentLength();
+ 
+            size = ((HttpURLConnection) connection).getContentLength();
             System.out.println("remote file content size:" + size);
             if (size <= 0) {
                 System.err.println("remote file size is negative(" + size + ")");
