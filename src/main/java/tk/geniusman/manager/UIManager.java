@@ -79,7 +79,7 @@ public class UIManager {
      * @param processPane
      */
     public void init() {
-        clear();
+        clear();//
         array = null;
         this.array = new Rectangle[WIDTH][HEIGHT];
         for (int j = 0; j < WIDTH; j++) {
@@ -113,6 +113,7 @@ public class UIManager {
                     }
                 });
 
+        type.getItems().clear();
         Arrays.asList(Type.values()).stream().forEach((t) -> type.getItems().add(t));
     }
 
