@@ -67,6 +67,8 @@ public abstract class AbstractDownloader implements Downloader {
                 if (s != null) {
                     s.shutdown();
                 }
+                s.awaitTermination(30, TimeUnit.HOURS);
+
                 if (args.getFullTmpPath().exists()) {
                     args.getFullTmpPath().delete();
                 }
