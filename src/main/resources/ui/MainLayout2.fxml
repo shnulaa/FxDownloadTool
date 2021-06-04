@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="419.0" prefWidth="456.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tk.geniusman.fx.controller.MainLayoutController">
+  <children>
+    <TabPane layoutX="14.0" layoutY="14.0" prefHeight="382.0" prefWidth="428.0" tabClosingPolicy="UNAVAILABLE">
+      <tabs>
+        <Tab text="Task List">
+          <content>
+            <AnchorPane id="Content" fx:id="taskListPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <effect>
+                <Bloom />
+              </effect>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab text="Download">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="367.0" prefWidth="428.0">
+              <children>
+                <Label fx:id="addressLab" layoutX="15.0" layoutY="12.0" text="URL" />
+                <TextField fx:id="address" layoutX="70.0" layoutY="9.0" prefHeight="25.0" prefWidth="322.0" />
+                <Label id="localAddressLab" layoutX="15.0" layoutY="41.0" text="Path" />
+                <Button fx:id="open" layoutX="182.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleOpen" text="Open" />
+                <TextField fx:id="localAddress" layoutX="70.0" layoutY="37.0" prefHeight="25.0" prefWidth="106.0" />
+                <Pane fx:id="processPane" layoutX="16.0" layoutY="98.0" prefHeight="173.0" prefWidth="401.0" />
+                <Button fx:id="download" layoutX="19.0" layoutY="327.0" mnemonicParsing="false" onAction="#handleDownload" text="Run" />
+                <Button fx:id="pauseOrResume" layoutX="156.0" layoutY="327.0" mnemonicParsing="false" onAction="#handlePauseOrResume" text="Pause" />
+                <ProgressBar fx:id="process" layoutX="16.0" layoutY="306.0" prefHeight="18.0" prefWidth="298.0" progress="0.0" />
+                <Label fx:id="speedLab" layoutX="319.0" layoutY="304.0" prefHeight="15.0" prefWidth="63.0" />
+                <Label fx:id="percentLab" layoutX="386.0" layoutY="304.0" prefHeight="15.0" prefWidth="40.0" />
+                <Button fx:id="terminate" layoutX="305.0" layoutY="327.0" mnemonicParsing="false" onAction="#handleTerminate" text="Terminate" />
+                        <Label fx:id="addressLab1" layoutX="251.0" layoutY="42.0" text="Type" />
+                        <ComboBox fx:id="type" layoutX="304.0" layoutY="38.0" prefHeight="23.0" prefWidth="88.0" />
+                        <Label fx:id="addressLab2" layoutX="11.0" layoutY="70.0" text="Proxy Address" />
+                        <TextField fx:id="proxyAddress" layoutX="103.0" layoutY="65.0" prefHeight="25.0" prefWidth="106.0" />
+                        <Label fx:id="addressLab21" layoutX="235.0" layoutY="70.0" text="Proxy Port" />
+                        <TextField fx:id="proxyPort" layoutX="324.0" layoutY="65.0" prefHeight="25.0" prefWidth="68.0" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+  </children>
+  <effect>
+    <Glow>
+      <input>
+        <ColorAdjust />
+      </input>
+    </Glow>
+  </effect>
+</Pane>
