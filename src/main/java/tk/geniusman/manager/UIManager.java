@@ -1,6 +1,8 @@
 package tk.geniusman.manager;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Random;
@@ -81,8 +83,8 @@ public class UIManager {
         for (int j = 0; j < WIDTH; j++) {
             for (int i = 0; i < HEIGHT; i++) {
                 final Rectangle r = new Rectangle();
-                r.setX(i * 4);
-                r.setY(j * 2);
+                r.setX(j * 4);
+                r.setY(i * 2);
                 r.setWidth(4);
                 r.setHeight(2);
                 r.setFill(Color.AZURE);
@@ -118,21 +120,55 @@ public class UIManager {
      * @param current
      * @param totol
      */
-    public void changeColor(final long current, final long total, final Thread t) {
+    public void changeColor(final long start, final long end, final long total, final Thread t) {
         if (total <= 0) {
             System.out.println("total is negative..");
             return;
         }
 
-        int percent = (int) (current * PIXELS / total);
+        BigDecimal startRate = BigDecimal.valueOf(start).divide(BigDecimal.valueOf(total), 10,
+                RoundingMode.HALF_UP);
+        BigDecimal start1 = startRate.multiply(BigDecimal.valueOf(PIXELS));
+        BigDecimal endRate =
+                BigDecimal.valueOf(end).divide(BigDecimal.valueOf(total), 10, RoundingMode.HALF_UP);
+        BigDecimal end1 = endRate.multiply(BigDecimal.valueOf(PIXELS));
 
-        int x = (int) percent / WIDTH;
-        int y = (int) percent % HEIGHT;
-        if (x >= 100 || x >= 100) {
-            return;
-        }
+        // System.out.println(end - start);
 
-        setColor(current, x, y, t);
+        // System.out.println(String.format(
+        // "start1:%s, end1:%s, startX:%s, startY:%s, endX:%s, endY:%s", start1.doubleValue(),
+        // end1.intValue(), (start1.intValue() % 100), (start1.intValue() / 100),
+        // (end1.intValue() % 100), (end1.intValue() / 100)));
+
+
+
+        // int percentStart = (int) (start * PIXELS / total);
+        // while (percentStart > 100) {
+        // percentStart = (int) (percentStart * PIXELS / total);
+        // }
+        // int startX = (int) percentStart / WIDTH;
+        // int startY = (int) percentStart % HEIGHT;
+        // if (startX >= 100 || startY >= 100) {
+        // return;
+        // }
+        //
+        // int percentEnd = (int) (end * PIXELS / total);
+        // while (percentEnd > 100) {
+        // percentEnd = (int) (percentEnd * PIXELS / total);
+        // }
+        // int endX = (int) percentEnd / WIDTH;
+        // int endY = (int) percentEnd % HEIGHT;
+        // if (endX >= 100 || endY >= 100) {
+        // return;
+        // }
+
+        // System.out.println(String.format("startX:%s, startY:%s, endX:%s, endY:%s.", startX,
+        // startY,
+        // endX, endY));
+
+
+        setColor((start1.intValue() % 100), (start1.intValue() / 100), (end1.intValue() % 100),
+                (end1.intValue() / 100), t, (total <= PIXELS * 1024));
     }
 
     /**
@@ -158,19 +194,41 @@ public class UIManager {
      * @param x
      * @param y
      */
-    private void setColor(final long current, int x, int y, Thread t) {
-        final Rectangle r = array[x][y];
-        if (r == null) {
+    private void setColor(int startX, int startY, int endX, int endY, Thread t, boolean isLoop) {
+        startX = (startX >= WIDTH) ? WIDTH - 1 : startX;
+        startY = (startY >= HEIGHT) ? HEIGHT - 1 : startY;
+
+        endX = (endX >= WIDTH) ? WIDTH - 1 : endX;
+        endY = (endY >= HEIGHT) ? HEIGHT - 1 : endY;
+
+        final Rectangle startR = array[startX][startY];
+        final Rectangle endR = array[endX][endY];
+        if (startR == null || endR == null) {
             return;
         }
-        synchronized (r) {
-            final Color color =
-                    THREAD_COLOR.containsKey(t.getName()) ? THREAD_COLOR.get(t.getName())
-                            : Color.BLUE;
-            if (r.getFill() != color) {
-                array[x][y].setFill(color);
+
+        final Color color =
+                THREAD_COLOR.containsKey(t.getName()) ? THREAD_COLOR.get(t.getName()) : Color.BLUE;
+        if (isLoop) {
+            for (int y = startY; y <= endY; y++) {
+                for (int x = startX; x <= ((y == endY) ? endX : WIDTH - 1); x++) {
+                    Rectangle rectangle = array[x][y];
+                    synchronized (rectangle) {
+                        if (rectangle.getFill() != color) {
+                            rectangle.setFill(color);
+                        }
+                    }
+                }
+            }
+        } else {
+            Rectangle rectangle = array[startX][startY];
+            synchronized (rectangle) {
+                if (rectangle.getFill() != color) {
+                    rectangle.setFill(color);
+                }
             }
         }
+
     }
 
     /**

@@ -115,7 +115,7 @@ public abstract class AbstractDownloadWorker extends RecursiveAction implements 
 
                         file.write(bytes, 0, readed);
                         current.getAndAdd(readed);
-                        m.getListener().change(current.get(), fileSize, t);
+                        m.getListener().change(current.get(), end, fileSize, t);
                         m.alreadyRead.getAndAdd(readed);
                     }
                     break;

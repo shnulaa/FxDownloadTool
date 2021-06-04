@@ -119,8 +119,8 @@ public class MainLayoutController {
         uiManager.init();
 
         // add change Color listener
-        m.addListener((current, fileSize, t) -> Platform
-                .runLater(() -> uiManager.changeColor(current, fileSize, t)));
+        m.addListener((start, end, fileSize, t) -> Platform
+                .runLater(() -> uiManager.changeColor(start, end, fileSize, t)));
 
         // add change Percent listener
         m.addProcessListener(
