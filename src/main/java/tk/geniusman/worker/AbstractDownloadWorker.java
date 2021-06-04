@@ -23,7 +23,7 @@ public abstract class AbstractDownloadWorker extends RecursiveAction implements 
      */
     private static final long serialVersionUID = -5856787129136734965L;
     /** one thread download connection timeout **/
-    protected static final int THREAD_DOWNLOAD_TIMEOUT = 50000;
+    protected static final int THREAD_DOWNLOAD_TIMEOUT = 10000;
     /** one thread download max retry count **/
     protected static final int THREAD_MAX_RETRY_COUNT = 10;
 

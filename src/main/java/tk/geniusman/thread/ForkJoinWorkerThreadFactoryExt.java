@@ -16,8 +16,7 @@ public class ForkJoinWorkerThreadFactoryExt implements ForkJoinWorkerThreadFacto
     /**
      * ForkJoinWorkerThreadFactoryExt
      */
-    public ForkJoinWorkerThreadFactoryExt() {
-    }
+    public ForkJoinWorkerThreadFactoryExt() {}
 
     private final AtomicInteger index = new AtomicInteger();
 
@@ -25,7 +24,7 @@ public class ForkJoinWorkerThreadFactoryExt implements ForkJoinWorkerThreadFacto
     public ForkJoinWorkerThread newThread(ForkJoinPool pool) {
         ForkJoinWorkerThread thread = new ForkJoinWorkerThreadExt(pool);
         thread.setName("ForkJoinThread-" + index.incrementAndGet());
-        thread.setDaemon(true);
+        thread.setDaemon(false);
         return thread;
     }
 

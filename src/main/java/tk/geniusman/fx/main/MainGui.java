@@ -50,6 +50,12 @@ public class MainGui extends Application {
     }
 
     @Override
+    public void stop() throws InterruptedException {
+        // System.out.println("Stop called: try to let background threads complete...");
+        Manager.getInstance().terminate();
+    }
+
+    @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.initStyle(StageStyle.UNDECORATED);
         Platform.setImplicitExit(false);
@@ -130,7 +136,7 @@ public class MainGui extends Application {
             openItem.addActionListener((e) -> Platform.runLater(() -> show()));
 
             java.awt.MenuItem exitItem = new java.awt.MenuItem("Exit");
-            exitItem.addActionListener((e) -> Manager.getInstance().terminate());
+            exitItem.addActionListener((e) -> Platform.exit());
 
             PopupMenu popup = new PopupMenu();
             popup.add(openItem);

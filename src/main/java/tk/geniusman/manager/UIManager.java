@@ -51,9 +51,8 @@ public class UIManager {
      * 
      * @param array
      */
-    private UIManager(final Rectangle[][] array, final ProgressBar process, final Label speedLab,
-            final Label percentLab, Pane processPane, ComboBox<Type> type) {
-        this.array = array;
+    private UIManager(final ProgressBar process, final Label speedLab, final Label percentLab,
+            Pane processPane, ComboBox<Type> type) {
         this.process = process;
         this.speedLab = speedLab;
         this.percentLab = percentLab;
@@ -80,6 +79,9 @@ public class UIManager {
      * @param processPane
      */
     public void init() {
+        clear();
+        array = null;
+        this.array = new Rectangle[WIDTH][HEIGHT];
         for (int j = 0; j < WIDTH; j++) {
             for (int i = 0; i < HEIGHT; i++) {
                 final Rectangle r = new Rectangle();
@@ -96,7 +98,7 @@ public class UIManager {
         final Field[] fields = Color.class.getDeclaredFields();
         final AtomicInteger index = new AtomicInteger(1);
         Supplier<Stream<Field>> supplier = () -> {
-            return Arrays.asList(fields).parallelStream()
+            return Arrays.asList(fields).stream()
                     .filter((f) -> f.getType().isAssignableFrom(Color.class));
         };
         supplier.get().skip(new Random().nextInt((int) supplier.get().count() - 15))
@@ -140,16 +142,13 @@ public class UIManager {
     /**
      * clear Color
      */
-    public void clearColor() {
+    public void clear() {
         if (array == null) {
             return;
         }
         for (int j = 0; j < WIDTH; j++) {
             for (int i = 0; i < HEIGHT; i++) {
-                final Rectangle r = array[j][i];
-                if (r != null) {
-                    r.setFill(Color.AZURE);
-                }
+                array[j][i] = null;
             }
         }
     }
@@ -203,10 +202,9 @@ public class UIManager {
      * @param array
      * @return new instance of RectangleManager
      */
-    public static UIManager newInstance(final Rectangle[][] array, final ProgressBar process,
-            final Label speedLab, final Label percentLab, final Pane processPane,
-            final ComboBox<Type> type) {
-        return new UIManager(array, process, speedLab, percentLab, processPane, type);
+    public static UIManager newInstance(final ProgressBar process, final Label speedLab,
+            final Label percentLab, final Pane processPane, final ComboBox<Type> type) {
+        return new UIManager(process, speedLab, percentLab, processPane, type);
     }
 
 

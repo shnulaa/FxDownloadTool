@@ -4,7 +4,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
-import java.util.concurrent.Executors;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -16,7 +15,6 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.StageStyle;
 import tk.geniusman.downloader.Args;
@@ -94,10 +92,10 @@ public class MainLayoutController {
     @FXML
     private TextField proxyPort;
 
-    /** Rectangle object array */
-    private Rectangle[][] array; // save the Rectangle object to array
-    private static final int WIDTH = 100;
-    private static final int HEIGHT = 100;
+    // /** Rectangle object array */
+    // private Rectangle[][] array; // save the Rectangle object to array
+    // private static final int WIDTH = 100;
+    // private static final int HEIGHT = 100;
     // private static final int PIXELS = WIDTH * HEIGHT;
     private final Manager m = Manager.getInstance();
     private UIManager uiManager;
@@ -109,14 +107,14 @@ public class MainLayoutController {
 
     @FXML
     private void initialize() {
-        address.setText(
-                "https://mirrors.bfsu.edu.cn/apache/zookeeper/zookeeper-3.7.0/apache-zookeeper-3.7.0-bin.tar.gz");
-        localAddress.setText("e:\\download\\");
+        // address.setText(
+        // "https://mirrors.bfsu.edu.cn/apache/zookeeper/zookeeper-3.7.0/apache-zookeeper-3.7.0-bin.tar.gz");
+        address.setText("http://42.192.237.45:8888/tmp.100M");
+        localAddress.setText("e:\\download\\test\\");
         pauseOrResume.setDisable(true);
         type.setValue(Type.DEFAULT);
 
-        this.array = new Rectangle[WIDTH][HEIGHT];
-        uiManager = UIManager.newInstance(array, process, speedLab, percentLab, processPane, type);
+        uiManager = UIManager.newInstance(process, speedLab, percentLab, processPane, type);
         uiManager.init();
 
         // add change Color listener
@@ -165,12 +163,13 @@ public class MainLayoutController {
             return;
         }
 
-        uiManager.clearColor();
+        // uiManager.clearColor();
+        uiManager.init();
         final Args args = Args.newInstance(addressTxt, THREAD_NUMBER, localAddressTxt,
                 DOWNLOAD_PREFIX + DATA_FORMAT.format(new Date()), proxyAddress.getText(),
                 proxyPort.getText());
         Downloader downloader = DownloaderFactory.getInstance(t, args);
-        Executors.newSingleThreadExecutor().submit(downloader);
+        Manager.getInstance().singleService.submit(downloader);
 
         download.setDisable(true);
         pauseOrResume.setDisable(false);
@@ -183,8 +182,7 @@ public class MainLayoutController {
     private void handleOpen() {
         final DirectoryChooser dChooser = new DirectoryChooser();
         dChooser.setTitle("Choose the Saved Path");
-
-        File defaultDirectory = new File("d:\\");
+        File defaultDirectory = new File("c:\\");
         dChooser.setInitialDirectory(defaultDirectory);
         File file = dChooser.showDialog(open.getScene().getWindow());
         if (file != null) {
@@ -208,7 +206,7 @@ public class MainLayoutController {
         Optional<ButtonType> ret = showAlert("File Download Tools", "Confirm to terminate..",
                 Alert.AlertType.CONFIRMATION);
         if (ret.get() == ButtonType.OK) {
-            Manager.getInstance().terminate();
+            Platform.runLater(() -> Platform.exit());;
         }
     }
 
