@@ -10,6 +10,7 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
+import org.apache.commons.lang3.StringUtils;
 import tk.geniusman.manager.Manager;
 import tk.geniusman.worker.Worker;
 
@@ -69,10 +70,18 @@ public interface Downloader extends Worker {
         if (isEmpty(args.getSavedPath())) {
             args.setSavedPath(FOLDER);
         }
+    }
 
+    /**
+     * resetFileArgs
+     * 
+     * @param args
+     */
+    default void resetFileArgs(final Args args) {
         String downloadURL = args.getDownloadUrl();
-        String fileName = downloadURL.substring(downloadURL.lastIndexOf("/") + 1);
+
         if (isEmpty(args.getFullFileName())) {
+            String fileName = downloadURL.substring(downloadURL.lastIndexOf("/") + 1);
             args.setFullFileName(fileName);
         }
 
@@ -80,6 +89,11 @@ public interface Downloader extends Worker {
         if (!args.getSavedPath().endsWith(File.separator)) {
             args.setFullPath(args.getSavedPath() + File.separator + args.getFullFileName());
         } else {
+            args.setFullPath(fullPath);
+        }
+
+        if (new File(fullPath).exists()) {
+            fullPath += "-" + System.currentTimeMillis();
             args.setFullPath(fullPath);
         }
 
@@ -136,7 +150,7 @@ public interface Downloader extends Worker {
                 code = ((HttpURLConnection) connection).getResponseCode();
             }
             System.out.println("response code: " + code);
- 
+
             size = ((HttpURLConnection) connection).getContentLength();
             System.out.println("remote file content size:" + size);
             if (size <= 0) {
@@ -148,6 +162,16 @@ public interface Downloader extends Worker {
                 throw new RuntimeException("remote file response code is not 200, skip download..");
             }
             args.setFileSize(size);
+
+            //
+            String raw = ((HttpURLConnection) connection).getHeaderField("Content-Disposition");
+            // raw = "attachment; filename=abc.jpg"
+            if (raw != null && raw.indexOf("=") != -1) {
+                String fileName = raw.split("=")[1]; // getting value after '='
+                if (StringUtils.isNotBlank(fileName)) {
+                    args.setFullFileName(fileName.replaceAll("\"", StringUtils.EMPTY));
+                }
+            }
             return size;
         } catch (Exception e) {
             throw e;

@@ -16,6 +16,7 @@ public class SnapshotWorker implements Worker {
      * serialVersionUID
      */
     private static final long serialVersionUID = 8031949176897883440L;
+    @SuppressWarnings("unused")
     private File sFile;
     private long size;
 
@@ -48,7 +49,7 @@ public class SnapshotWorker implements Worker {
             // System.out.print(ProgressBar.showBarByPoint(current, 100, 70,
             // speed, true));
             System.out.flush();
-            writeObject(m, sFile);
+            // writeObject(m, sFile);
             m.getPlistener().change(current / 100, speed, Thread.currentThread());
         } catch (Exception ex) {
             ex.printStackTrace();

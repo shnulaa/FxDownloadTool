@@ -49,6 +49,9 @@ public abstract class AbstractDownloader implements Downloader {
             // check the remote file is exist
             checkRemoteFile(args);
 
+            //
+            resetFileArgs(args);
+
             ScheduledExecutorService s = null;
             ExecutorService es = null;
             try {

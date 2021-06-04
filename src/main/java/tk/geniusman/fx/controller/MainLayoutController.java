@@ -1,8 +1,6 @@
 package tk.geniusman.fx.controller;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Optional;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -39,15 +37,15 @@ public class MainLayoutController {
      */
     private static final int THREAD_NUMBER = 20;
 
-    /**
-     * the instance of SimpleDateFormat
-     */
-    private static final SimpleDateFormat DATA_FORMAT = new SimpleDateFormat("yyyyMMddmmss");
-
-    /**
-     * download prefix
-     */
-    private static final String DOWNLOAD_PREFIX = "download_";
+    // /**
+    // * the instance of SimpleDateFormat
+    // */
+    // private static final SimpleDateFormat DATA_FORMAT = new SimpleDateFormat("yyyyMMddmmss");
+    //
+    // /**
+    // * download prefix
+    // */
+    // private static final String DOWNLOAD_PREFIX = "download_";
 
     @FXML
     private TextField address; // download URL address
@@ -165,8 +163,8 @@ public class MainLayoutController {
 
         // uiManager.clearColor();
         uiManager.init();
-        final Args args = Args.newInstance(addressTxt, THREAD_NUMBER, localAddressTxt,
-                DOWNLOAD_PREFIX + DATA_FORMAT.format(new Date()), proxyAddress.getText(),
+        final Args args = Args.newInstance(addressTxt, THREAD_NUMBER, localAddressTxt, null,
+                /* DOWNLOAD_PREFIX + DATA_FORMAT.format(new Date()) */ proxyAddress.getText(),
                 proxyPort.getText());
         Downloader downloader = DownloaderFactory.getInstance(t, args);
         Manager.getInstance().singleService.submit(downloader);
