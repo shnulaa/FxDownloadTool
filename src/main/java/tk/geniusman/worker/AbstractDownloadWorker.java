@@ -122,7 +122,7 @@ public abstract class AbstractDownloadWorker extends RecursiveAction implements 
                 } catch (Exception e) {
                     // System.err.println("exception occurred while
                     // download..");
-                    e.printStackTrace();
+                    // e.printStackTrace();
                     Thread.sleep(1000);
                     continue; // write exception or read timeout, retry
                 }

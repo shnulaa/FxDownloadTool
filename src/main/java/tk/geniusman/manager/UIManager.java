@@ -133,42 +133,8 @@ public class UIManager {
                 BigDecimal.valueOf(end).divide(BigDecimal.valueOf(total), 10, RoundingMode.HALF_UP);
         BigDecimal end1 = endRate.multiply(BigDecimal.valueOf(PIXELS));
 
-        // System.out.println(end - start);
-
-        // System.out.println(String.format(
-        // "start1:%s, end1:%s, startX:%s, startY:%s, endX:%s, endY:%s", start1.doubleValue(),
-        // end1.intValue(), (start1.intValue() % 100), (start1.intValue() / 100),
-        // (end1.intValue() % 100), (end1.intValue() / 100)));
-
-
-
-        // int percentStart = (int) (start * PIXELS / total);
-        // while (percentStart > 100) {
-        // percentStart = (int) (percentStart * PIXELS / total);
-        // }
-        // int startX = (int) percentStart / WIDTH;
-        // int startY = (int) percentStart % HEIGHT;
-        // if (startX >= 100 || startY >= 100) {
-        // return;
-        // }
-        //
-        // int percentEnd = (int) (end * PIXELS / total);
-        // while (percentEnd > 100) {
-        // percentEnd = (int) (percentEnd * PIXELS / total);
-        // }
-        // int endX = (int) percentEnd / WIDTH;
-        // int endY = (int) percentEnd % HEIGHT;
-        // if (endX >= 100 || endY >= 100) {
-        // return;
-        // }
-
-        // System.out.println(String.format("startX:%s, startY:%s, endX:%s, endY:%s.", startX,
-        // startY,
-        // endX, endY));
-
-
-        setColor((start1.intValue() % 100), (start1.intValue() / 100), (end1.intValue() % 100),
-                (end1.intValue() / 100), t, (total <= PIXELS * 1024));
+        setColor((start1.intValue() % WIDTH), (start1.intValue() / HEIGHT),
+                (end1.intValue() % WIDTH), (end1.intValue() / HEIGHT), t, (total <= PIXELS * 1024));
     }
 
     /**

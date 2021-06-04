@@ -113,6 +113,7 @@ public class MainLayoutController {
                 "https://mirrors.bfsu.edu.cn/apache/zookeeper/zookeeper-3.7.0/apache-zookeeper-3.7.0-bin.tar.gz");
         localAddress.setText("e:\\download\\");
         pauseOrResume.setDisable(true);
+        type.setValue(Type.DEFAULT);
 
         this.array = new Rectangle[WIDTH][HEIGHT];
         uiManager = UIManager.newInstance(array, process, speedLab, percentLab, processPane, type);
