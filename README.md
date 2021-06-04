@@ -5,5 +5,5 @@
 ### To create your executable file with JavaFX-magic, call mvn jfx:jar. The jar-file will be placed at target/jfx/app.
 
 ### snapshot
-![image](http://git.geniusman.tk/liuyq/FxDownloadTool/raw/develop/src/main/resources/image/snapshot.png)
+![image](https://raw.githubusercontent.com/shnulaa/FxDownloadTool/master/src/main/resources/image/snapshot.png)
 
