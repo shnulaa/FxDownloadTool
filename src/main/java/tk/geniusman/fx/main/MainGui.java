@@ -33,6 +33,9 @@ public class MainGui extends Application {
     private static final String THEME_value = "BLACKONWHITE";
     private static final String ACCESSIBILITY_THEME = "High Contrast #2";
 
+
+    private static final String RESOURCE_CSS = "/theme/modena_dark.css";
+
     private Stage primaryStage;
     private Scene rootScene;
     private TrayIcon trayIcon;
@@ -63,9 +66,11 @@ public class MainGui extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle(TITLE);
 
+
+
         setUserAgentStylesheet(STYLESHEET_MODENA);
-        System.setProperty(THEME_KEY, THEME_value);
-        com.sun.javafx.application.PlatformImpl.setAccessibilityTheme(ACCESSIBILITY_THEME);
+        // System.setProperty(THEME_KEY, THEME_value);
+        // com.sun.javafx.application.PlatformImpl.setAccessibilityTheme(ACCESSIBILITY_THEME);
 
         try {
             // Load the root layout from the FXML file
@@ -74,6 +79,9 @@ public class MainGui extends Application {
             setDragable(rootLayout);
 
             rootScene = new Scene(rootLayout);
+
+            rootScene.getStylesheets().add(RESOURCE_CSS);
+
             primaryStage.setScene(rootScene);
             primaryStage.setResizable(false);
 

@@ -60,6 +60,9 @@ public class MainLayoutController {
     private Button clearLog;
 
     @FXML
+    private Button stop;
+
+    @FXML
     private Pane processPane;
 
     @FXML
@@ -111,6 +114,7 @@ public class MainLayoutController {
 
         uiManager = UIManager.newInstance(process, speedLab, percentLab, processPane);
         uiManager.init();
+        stop.setDisable(true);
 
         // init logListView
         ObservableList<String> data = FXCollections.observableArrayList();
@@ -181,13 +185,13 @@ public class MainLayoutController {
         uiManager.init();
         Manager.getInstance().clear();
         final Args args = Args.newInstance(addressTxt, threadNumInt, localAddressTxt, null,
-                /* DOWNLOAD_PREFIX + DATA_FORMAT.format(new Date()) */ proxyAddress.getText(),
-                proxyPort.getText());
+                proxyAddress.getText(), proxyPort.getText(), "start");
         Downloader downloader = DownloaderFactory.getInstance(t, args);
 
         m.getLogViewListener().addLog("Download start.");
-        Manager.getInstance().singleService.submit(downloader);
+        m.singleService.submit(downloader);
 
+        stop.setDisable(false);
         download.setDisable(true);
         pauseOrResume.setDisable(false);
     }
@@ -226,7 +230,21 @@ public class MainLayoutController {
 
     @FXML
     private void handleClearLog() throws Exception {
+        Platform.runLater(() -> {
+            logListView.getItems().clear();
+        });
+    }
 
+    @FXML
+    private void handleStop() throws Exception {
+        Optional<ButtonType> ret =
+                showAlert("File Download Tools", "Confirm to stop..", Alert.AlertType.CONFIRMATION);
+        if (ret.get() == ButtonType.OK) {
+            download.setDisable(true);
+            stop.setDisable(true);
+            pauseOrResume.setDisable(true);
+            Platform.runLater(() -> m.stop());;
+        }
     }
 
     @FXML

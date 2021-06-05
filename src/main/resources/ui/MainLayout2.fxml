@@ -27,9 +27,9 @@
                 <Label id="localAddressLab" layoutX="15.0" layoutY="41.0" text="Path" />
                 <Button fx:id="open" layoutX="182.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleOpen" text="Open" />
                 <TextField fx:id="localAddress" layoutX="70.0" layoutY="37.0" prefHeight="25.0" prefWidth="106.0" />
-                <Pane fx:id="processPane" layoutX="16.0" layoutY="99.0" prefHeight="208.0" prefWidth="396.0" />
+                <Pane fx:id="processPane" blendMode="SOFT_LIGHT" layoutX="16.0" layoutY="99.0" prefHeight="202.0" prefWidth="401.0" style="-fx-background-color: rgb(220, 220, 220);" />
                 <Button fx:id="download" layoutX="19.0" layoutY="367.0" mnemonicParsing="false" onAction="#handleDownload" text="Run" />
-                <Button fx:id="pauseOrResume" layoutX="181.0" layoutY="367.0" mnemonicParsing="false" onAction="#handlePauseOrResume" text="Pause" />
+                <Button fx:id="pauseOrResume" layoutX="123.0" layoutY="367.0" mnemonicParsing="false" onAction="#handlePauseOrResume" text="Pause" />
                 <ProgressBar fx:id="process" layoutX="15.0" layoutY="315.0" prefHeight="18.0" prefWidth="349.0" progress="0.0" />
                 <Label fx:id="speedLab" layoutX="20.0" layoutY="343.0" prefHeight="15.0" prefWidth="63.0" />
                 <Label fx:id="percentLab" layoutX="375.0" layoutY="316.0" prefHeight="15.0" prefWidth="40.0" />
@@ -42,6 +42,7 @@
                         <TextField fx:id="proxyPort" layoutX="267.0" layoutY="65.0" prefHeight="25.0" prefWidth="43.0" />
                         <Label fx:id="addressLab22" layoutX="321.0" layoutY="69.0" text="Thread" />
                         <TextField fx:id="theadNumber" layoutX="370.0" layoutY="64.0" prefHeight="25.0" prefWidth="39.0" />
+                        <Button fx:id="stop" layoutX="229.0" layoutY="367.0" mnemonicParsing="false" onAction="#handleStop" text="Stop" />
               </children>
             </AnchorPane>
           </content>

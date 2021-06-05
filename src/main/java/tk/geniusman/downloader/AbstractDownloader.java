@@ -49,7 +49,7 @@ public abstract class AbstractDownloader implements Downloader {
             // check the remote file is exist
             checkRemoteFile(args);
 
-            //
+            // resetFileArgs
             resetFileArgs(args);
 
             ScheduledExecutorService s = null;
@@ -57,6 +57,7 @@ public abstract class AbstractDownloader implements Downloader {
             try {
                 recovery(args.getFullTmpPath());
                 m.setSize(args.getFileSize());
+                m.terminate = false;
                 es = startMainTask(args);
                 s = startScheduledTask(args);
             } catch (Exception e) {
@@ -82,11 +83,17 @@ public abstract class AbstractDownloader implements Downloader {
             long end = System.currentTimeMillis();
             System.out.println("cost time: " + (end - start) / 1000 + "s");
             m.getLogViewListener().addLog("cost time: " + (end - start) / 1000 + "s");
-            m.getPlistener().change(1, 0, Thread.currentThread());
-            m.getFlistener().finish(false, "Download Complete Successfully..");
+
+            if (m.isOver()) {
+                m.getPlistener().change(1, 0, Thread.currentThread());
+                m.getFlistener().finish(false, "Download Complete Successfully..");
+            } else {
+                m.getFlistener().finish(false, "Stop Successfully..");
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            m.getFlistener().finish(false, "Download Complete With Exception..");
+            m.getFlistener().finish(false,
+                    m.isOver() ? "Download Complete With Exception.." : "Stop With Exception..");
         }
     }
 

@@ -99,6 +99,14 @@ public class Args implements Serializable {
         this.proxyPort = proxyPort;
     }
 
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
     public Proxy getProxy() {
         // if (proxyAddress != null && !proxyAddress.isEmpty() && proxyPort != null
         // && !proxyPort.isEmpty()) {
@@ -109,6 +117,7 @@ public class Args implements Serializable {
         return null;
     }
 
+    private String action;
     private String downloadUrl;
     private Integer threadNumber;
     private String savedPath;
@@ -129,13 +138,14 @@ public class Args implements Serializable {
      * @param fullFileName
      */
     private Args(String downloadUrl, Integer threadNumber, String savedPath, String fullFileName,
-            String proxyAddress, String proxyPort) {
+            String proxyAddress, String proxyPort, String action) {
         this.downloadUrl = downloadUrl;
         this.threadNumber = threadNumber;
         this.savedPath = savedPath;
         this.fullFileName = fullFileName;
         this.proxyAddress = proxyAddress;
         this.proxyPort = proxyPort;
+        this.action = action;
     }
 
     /**
@@ -150,9 +160,10 @@ public class Args implements Serializable {
      * @return
      */
     public static Args newInstance(String downloadUrl, Integer threadNumber, String savedPath,
-            String fullFileName, String proxyAddress, String proxyPort) {
-        return new Args(downloadUrl, threadNumber, savedPath, fullFileName, proxyAddress,
-                proxyPort);
+            String fullFileName, String proxyAddress, String proxyPort, String action) {
+        return new Args(downloadUrl, threadNumber, savedPath, fullFileName, proxyAddress, proxyPort,
+                action);
     }
+
 
 }

@@ -86,6 +86,10 @@ public class Manager implements Serializable {
         return map.values();
     }
 
+    public boolean isOver() {
+        return alreadyRead.get() == size;
+    }
+
     public Manager add(ForkJoinDownloadWorker task) {
         final String key = task.getKey();
         map.put(key, task); // overwrite
@@ -233,6 +237,21 @@ public class Manager implements Serializable {
 
     public void setFlistener(FinishedListener flistener) {
         this.flistener = flistener;
+    }
+
+    public void stop() {
+        this.terminate = true;
+
+        if (this.isPause()) {
+            this.resume();
+        }
+
+        for (final Thread t : this.threads) {
+            if (t != null) {
+                LockSupport.unpark(t);
+                t.interrupt();
+            }
+        }
     }
 
     /**
