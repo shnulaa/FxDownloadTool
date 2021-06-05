@@ -3,6 +3,8 @@ package tk.geniusman.downloader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -131,33 +133,46 @@ public interface Downloader extends Worker {
             connection.setRequestProperty("User-Agent",
                     "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36");
 
+
             Map<String, List<String>> crunchifyHeader = connection.getHeaderFields();
             // If URL is getting 301 and 302 redirection HTTP code then get new URL link.
             // This below for loop is totally optional if you are sure that your URL is not getting
             // redirected to anywhere
-            for (String header : crunchifyHeader.get(null)) {
-                if (header.contains(" 302 ") || header.contains(" 301 ")) {
-                    String link = crunchifyHeader.get("Location").get(0);
-                    url = new URL(link);
-                    connection = (HttpURLConnection) url.openConnection();
-                    crunchifyHeader = connection.getHeaderFields();
+            try {
+                if (crunchifyHeader != null && !crunchifyHeader.isEmpty()) {
+                    for (String header : crunchifyHeader.get(null)) {
+                        if (header.contains(" 302 ") || header.contains(" 301 ")) {
+                            String link = crunchifyHeader.get("Location").get(0);
+                            url = new URL(link);
+                            connection = (HttpURLConnection) url.openConnection();
+                            crunchifyHeader = connection.getHeaderFields();
+                        }
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
             long size, code = 0;
             if (args.getDownloadUrl().startsWith("https")) {
                 code = ((HttpsURLConnection) connection).getResponseCode();
             } else {
                 code = ((HttpURLConnection) connection).getResponseCode();
             }
+            m.getLogViewListener().addLog("response code: " + code);
             System.out.println("response code: " + code);
 
             size = ((HttpURLConnection) connection).getContentLength();
+            m.getLogViewListener().addLog("remote file content size:" + size);
             System.out.println("remote file content size:" + size);
             if (size <= 0) {
+                m.getLogViewListener().addLog("remote file size is negative(" + size + ")");
                 System.err.println("remote file size is negative(" + size + ")");
             }
 
             if (code != 200) {
+                m.getLogViewListener().addLog(
+                        "remote file response code is not 200 =" + code + ", skip download..");
                 System.err.println("remote file response code is not 200, skip download..");
                 throw new RuntimeException("remote file response code is not 200, skip download..");
             }
@@ -174,6 +189,11 @@ public interface Downloader extends Worker {
             }
             return size;
         } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            String sStackTrace = sw.toString();
+            m.getLogViewListener().addLog(sStackTrace);
             throw e;
         } finally {
             if (connection instanceof HttpURLConnection) {
