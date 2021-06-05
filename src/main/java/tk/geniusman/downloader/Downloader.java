@@ -11,6 +11,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.net.ssl.HttpsURLConnection;
 import org.apache.commons.lang3.StringUtils;
 import tk.geniusman.manager.Manager;
@@ -178,17 +180,20 @@ public interface Downloader extends Worker {
             }
             args.setFileSize(size);
 
-            //
+            // get file name
             String raw = ((HttpURLConnection) connection).getHeaderField("Content-Disposition");
             // raw = "attachment; filename=abc.jpg"
-            if (raw != null && raw.indexOf("=") != -1) {
-                String fileName = raw.split("=")[1]; // getting value after '='
-                if (StringUtils.isNotBlank(fileName)) {
-                    args.setFullFileName(fileName.replaceAll("\"", StringUtils.EMPTY));
+            if (raw != null && raw.indexOf("attachment") != -1) {
+                Pattern regex = Pattern.compile("(?<=filename=\").*?(?=\")");
+                Matcher regexMatcher = regex.matcher(raw);
+                if (regexMatcher.find()) {
+                    args.setFullFileName(regexMatcher.group().replaceAll("\"", StringUtils.EMPTY));
                 }
             }
             return size;
-        } catch (Exception e) {
+        } catch (
+
+        Exception e) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
@@ -233,5 +238,17 @@ public interface Downloader extends Worker {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+        String fileName = null;
+        Pattern regex = Pattern.compile("(?<=filename=\").*?(?=\")");
+        Matcher regexMatcher = regex.matcher(
+                "attachment; filename=\"7000+%E5%BD%B1%E8%A7%864K%E5%8F%8A%E5%8E%9F%E7%9B%98%E7%A7%8D%E5%AD%90%E8%B5%84%E6%BA%90.zip\"; filename*=UTF-8''7000%20%E5%BD%B1%E8%A7%864K%E5%8F%8A%E5%8E%9F%E7%9B%98%E7%A7%8D%E5%AD%90%E8%B5%84%E6%BA%90.zip");
+        if (regexMatcher.find()) {
+            fileName = regexMatcher.group();
+        }
+
+        System.out.println(fileName);
     }
 }
