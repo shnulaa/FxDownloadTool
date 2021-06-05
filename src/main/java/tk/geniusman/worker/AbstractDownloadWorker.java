@@ -95,6 +95,9 @@ public abstract class AbstractDownloadWorker extends RecursiveAction implements 
                     con.setRequestProperty("Range", "bytes=" + getCurrent() + "-" + end);
                 }
 
+                String logString = String.format("TN:%s,Range %s - %s ",
+                        Thread.currentThread().getName(), getCurrent(), end);
+                m.getLogViewListener().addLog(logString);
                 try (BufferedInputStream bis = new BufferedInputStream(con.getInputStream());
                         RandomAccessFile file = new RandomAccessFile(dFile, "rw");) {
                     file.seek(getCurrent());
@@ -104,6 +107,8 @@ public abstract class AbstractDownloadWorker extends RecursiveAction implements 
                     while (!t.isInterrupted() && !m.terminate && (readed = bis.read(bytes)) != -1) {
 
                         while (m.isPause()) {
+                            m.getLogViewListener().addLog(String.format("TN:%s pause£¡ ",
+                                    Thread.currentThread().getName()));
                             LockSupport.park();
                         }
 
@@ -123,6 +128,10 @@ public abstract class AbstractDownloadWorker extends RecursiveAction implements 
                     // System.err.println("exception occurred while
                     // download..");
                     // e.printStackTrace();
+
+                    m.getLogViewListener().addLog(String.format("TN:%s RERTRY:%s EX:%s. ",
+                            Thread.currentThread().getName(), retryCount, e.getMessage()));
+
                     Thread.sleep(1000);
                     continue; // write exception or read timeout, retry
                 }

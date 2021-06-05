@@ -1,14 +1,18 @@
 package tk.geniusman.fx.controller;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Optional;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -37,16 +41,6 @@ public class MainLayoutController {
      */
     private static final int THREAD_NUMBER = 20;
 
-    // /**
-    // * the instance of SimpleDateFormat
-    // */
-    // private static final SimpleDateFormat DATA_FORMAT = new SimpleDateFormat("yyyyMMddmmss");
-    //
-    // /**
-    // * download prefix
-    // */
-    // private static final String DOWNLOAD_PREFIX = "download_";
-
     @FXML
     private TextField address; // download URL address
 
@@ -61,6 +55,9 @@ public class MainLayoutController {
 
     @FXML
     private Button pauseOrResume;
+
+    @FXML
+    private Button clearLog;
 
     @FXML
     private Pane processPane;
@@ -89,12 +86,11 @@ public class MainLayoutController {
     private TextField proxyAddress;
     @FXML
     private TextField proxyPort;
+    @FXML
+    private TextField theadNumber;
+    @FXML
+    private ListView<String> logListView;
 
-    // /** Rectangle object array */
-    // private Rectangle[][] array; // save the Rectangle object to array
-    // private static final int WIDTH = 100;
-    // private static final int HEIGHT = 100;
-    // private static final int PIXELS = WIDTH * HEIGHT;
     private final Manager m = Manager.getInstance();
     private UIManager uiManager;
 
@@ -110,10 +106,15 @@ public class MainLayoutController {
         address.setText("http://42.192.237.45:8888/tmp.100M");
         localAddress.setText("e:\\download\\test\\");
         pauseOrResume.setDisable(true);
+        Arrays.asList(Type.values()).stream().forEach((t) -> type.getItems().add(t));
         type.setValue(Type.DEFAULT);
 
-        uiManager = UIManager.newInstance(process, speedLab, percentLab, processPane, type);
+        uiManager = UIManager.newInstance(process, speedLab, percentLab, processPane);
         uiManager.init();
+
+        // init logListView
+        ObservableList<String> data = FXCollections.observableArrayList();
+        logListView.setItems(data);
 
         // add change Color listener
         m.addListener((start, end, fileSize, t) -> Platform
@@ -129,10 +130,19 @@ public class MainLayoutController {
                 download.setDisable(false);
                 pauseOrResume.setText("Pause");
                 pauseOrResume.setDisable(true);
+                m.getLogViewListener().addLog("Download finish. message£º" + message);
                 showAlert("File Download Tools", message,
                         hasError ? Alert.AlertType.ERROR : Alert.AlertType.INFORMATION);
             });
         });
+
+        m.addLogListener((log) -> {
+            Platform.runLater(() -> {
+                logListView.getItems().add(log);
+            });
+        });
+
+
     }
 
     /**
@@ -161,12 +171,21 @@ public class MainLayoutController {
             return;
         }
 
+        int threadNumInt = THREAD_NUMBER;
+        if (theadNumber.getText() != null && !theadNumber.getText().isEmpty()) {
+            threadNumInt = Integer.valueOf(theadNumber.getText());
+        }
+
         // uiManager.clearColor();
+        logListView.getItems().clear();
         uiManager.init();
-        final Args args = Args.newInstance(addressTxt, THREAD_NUMBER, localAddressTxt, null,
+        Manager.getInstance().clear();
+        final Args args = Args.newInstance(addressTxt, threadNumInt, localAddressTxt, null,
                 /* DOWNLOAD_PREFIX + DATA_FORMAT.format(new Date()) */ proxyAddress.getText(),
                 proxyPort.getText());
         Downloader downloader = DownloaderFactory.getInstance(t, args);
+
+        m.getLogViewListener().addLog("Download start.");
         Manager.getInstance().singleService.submit(downloader);
 
         download.setDisable(true);
@@ -178,14 +197,36 @@ public class MainLayoutController {
      */
     @FXML
     private void handleOpen() {
+        String defaultPath = "c:\\";
+        try {
+            openDirectory((localAddress.getText() != null && !localAddress.getText().isEmpty())
+                    ? localAddress.getText()
+                    : defaultPath);
+        } catch (Exception e) {
+            openDirectory(defaultPath);
+        }
+
+    }
+
+    /**
+     * openDirectory
+     * 
+     * @param path
+     */
+    private void openDirectory(String path) {
         final DirectoryChooser dChooser = new DirectoryChooser();
         dChooser.setTitle("Choose the Saved Path");
-        File defaultDirectory = new File("c:\\");
+        File defaultDirectory = new File(path);
         dChooser.setInitialDirectory(defaultDirectory);
         File file = dChooser.showDialog(open.getScene().getWindow());
         if (file != null) {
             localAddress.setText(file.getAbsolutePath());
         }
+    }
+
+    @FXML
+    private void handleClearLog() throws Exception {
+
     }
 
     @FXML

@@ -81,6 +81,7 @@ public abstract class AbstractDownloader implements Downloader {
             // System.out.flush();
             long end = System.currentTimeMillis();
             System.out.println("cost time: " + (end - start) / 1000 + "s");
+            m.getLogViewListener().addLog("cost time: " + (end - start) / 1000 + "s");
             m.getPlistener().change(1, 0, Thread.currentThread());
             m.getFlistener().finish(false, "Download Complete Successfully..");
         } catch (Exception e) {

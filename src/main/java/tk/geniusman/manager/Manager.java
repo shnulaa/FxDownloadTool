@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.LockSupport;
 import tk.geniusman.listener.ChangedListener;
 import tk.geniusman.listener.FinishedListener;
+import tk.geniusman.listener.LogViewListener;
 import tk.geniusman.listener.ProcessChangedListener;
 import tk.geniusman.worker.ForkJoinDownloadWorker;
 
@@ -49,6 +50,9 @@ public class Manager implements Serializable {
 
     /** the listener of the process changed **/
     private transient ProcessChangedListener plistener;
+
+    /** the listener of the process changed **/
+    private transient LogViewListener logViewListener;
 
     /** the listener of the process changed **/
     private transient FinishedListener flistener;
@@ -137,6 +141,15 @@ public class Manager implements Serializable {
         this.plistener = plistener;
     }
 
+    public LogViewListener getLogViewListener() {
+        return logViewListener;
+    }
+
+    public void setLogViewListener(LogViewListener logViewListener) {
+        this.logViewListener = logViewListener;
+    }
+
+
     public boolean isPause() {
         return pause.get();
     }
@@ -189,6 +202,14 @@ public class Manager implements Serializable {
      */
     public void addProcessListener(ProcessChangedListener listener) {
         this.setPlistener(listener);
+    }
+
+    /**
+     * 
+     * @param listener
+     */
+    public void addLogListener(LogViewListener listener) {
+        this.setLogViewListener(listener);
     }
 
     /**

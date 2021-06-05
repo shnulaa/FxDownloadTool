@@ -11,13 +11,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javafx.application.Platform;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import tk.geniusman.downloader.Type;
 
 /**
  * UIManager
@@ -37,7 +35,6 @@ public class UIManager {
     private Label speedLab;
     private Label percentLab;
     private Pane processPane;
-    private ComboBox<Type> type;
 
     /**
      * 
@@ -52,12 +49,11 @@ public class UIManager {
      * @param array
      */
     private UIManager(final ProgressBar process, final Label speedLab, final Label percentLab,
-            Pane processPane, ComboBox<Type> type) {
+            Pane processPane) {
         this.process = process;
         this.speedLab = speedLab;
         this.percentLab = percentLab;
         this.processPane = processPane;
-        this.type = type;
     }
 
     /**
@@ -113,8 +109,8 @@ public class UIManager {
                     }
                 });
 
-        type.getItems().clear();
-        Arrays.asList(Type.values()).stream().forEach((t) -> type.getItems().add(t));
+        // type.getItems().clear();
+
     }
 
     /**
@@ -204,8 +200,8 @@ public class UIManager {
      * @return new instance of RectangleManager
      */
     public static UIManager newInstance(final ProgressBar process, final Label speedLab,
-            final Label percentLab, final Pane processPane, final ComboBox<Type> type) {
-        return new UIManager(process, speedLab, percentLab, processPane, type);
+            final Label percentLab, final Pane processPane) {
+        return new UIManager(process, speedLab, percentLab, processPane);
     }
 
 
