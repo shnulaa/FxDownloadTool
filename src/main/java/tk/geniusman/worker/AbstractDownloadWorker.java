@@ -23,9 +23,13 @@ public abstract class AbstractDownloadWorker extends RecursiveAction implements 
      */
     private static final long serialVersionUID = -5856787129136734965L;
     /** one thread download connection timeout **/
-    protected static final int THREAD_DOWNLOAD_TIMEOUT = 10000;
+    protected static int THREAD_DOWNLOAD_TIMEOUT = 10000;
+    /** one thread download connection timeout **/
+    protected static int THREAD_DOWNLOAD_TIMEOUT_LARGE = 30000;
     /** one thread download max retry count **/
     protected static final int THREAD_MAX_RETRY_COUNT = 10;
+
+    private static final long PER = 1024L * 1024L * 10; // 10M
 
     protected String key; // (start - end)
     protected long start; // the start position to download
@@ -54,6 +58,9 @@ public abstract class AbstractDownloadWorker extends RecursiveAction implements 
         this.key = (String.valueOf(this.start) + "-" + String.valueOf(this.end));
         this.fileSize = fileSize;
         this.proxy = proxy;
+        THREAD_DOWNLOAD_TIMEOUT = (this.end - this.start >= PER) ? THREAD_DOWNLOAD_TIMEOUT_LARGE
+                : THREAD_DOWNLOAD_TIMEOUT;
+
     }
 
     @Override
@@ -128,9 +135,10 @@ public abstract class AbstractDownloadWorker extends RecursiveAction implements 
                     // System.err.println("exception occurred while
                     // download..");
                     // e.printStackTrace();
-
-                    m.getLogViewListener().addLog(String.format("TN:%s RERTRY:%s EX:%s. ",
-                            Thread.currentThread().getName(), retryCount, e.getMessage()));
+                    m.getLogViewListener()
+                            .addLog(String.format("TN:%s RERTRY:%s TO:%s EX:%s. ",
+                                    Thread.currentThread().getName(), retryCount,
+                                    THREAD_DOWNLOAD_TIMEOUT, e.getMessage()));
 
                     Thread.sleep(1000);
                     continue; // write exception or read timeout, retry

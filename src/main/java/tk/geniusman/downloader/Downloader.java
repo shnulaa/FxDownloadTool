@@ -9,12 +9,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.net.ssl.HttpsURLConnection;
-import org.apache.commons.lang3.StringUtils;
 import tk.geniusman.manager.Manager;
 import tk.geniusman.worker.Worker;
 
@@ -187,7 +187,7 @@ public interface Downloader extends Worker {
                 Pattern regex = Pattern.compile("(?<=filename=\").*?(?=\")");
                 Matcher regexMatcher = regex.matcher(raw);
                 if (regexMatcher.find()) {
-                    args.setFullFileName(regexMatcher.group().replaceAll("\"", StringUtils.EMPTY));
+                    args.setFullFileName(URLDecoder.decode(regexMatcher.group(), "UTF-8"));
                 }
             }
             return size;

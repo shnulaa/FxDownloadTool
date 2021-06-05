@@ -21,6 +21,9 @@ public class DefaultDownloader extends AbstractDownloader {
      */
     private static final long serialVersionUID = -9071047816647350925L;
 
+    private static final long THRESHOLD = 1024L * 1024L * 500L; // 500M
+    private static final long PER = 1024L * 1024L * 10; // 10M
+
     /**
      * DefaultDownloader
      * 
@@ -40,10 +43,12 @@ public class DefaultDownloader extends AbstractDownloader {
         final Proxy proxy = args.getProxy();
 
         ExecutorService service = DefaultThreadPoolExecutorExt.getDefaultInstance(threadNum);
-        final long per = fileSize / threadNum;
-        IntStream.rangeClosed(1, threadNum).boxed()
+
+        final long per = (fileSize <= THRESHOLD) ? (fileSize / threadNum) : PER;
+        final int count = (fileSize <= THRESHOLD) ? threadNum : (int) (fileSize / per);
+        IntStream.rangeClosed(1, count).boxed()
                 .map((v) -> new DefaultDownloadWorker((v == 1) ? 0 : (v - 1) * per + 1,
-                        (v == threadNum && v * per < fileSize ? fileSize : v * per), fileSize, url,
+                        (v == count && v * per < fileSize ? fileSize : v * per), fileSize, url,
                         dFile, proxy))
                 .forEach((o) -> service.submit(o));
         return (T) service;
@@ -55,17 +60,37 @@ public class DefaultDownloader extends AbstractDownloader {
      * @param args
      */
     public static void main(String[] args) {
-        long fileSize = 21663825;
+        long fileSize = 1024L * 1024L * 1024L * 1024L;
         int threadNum = 15;
+
+
         System.out.println(fileSize / threadNum);
         System.out.println(fileSize % threadNum);
-        final long per = fileSize / threadNum;
+        System.out.println(fileSize <= THRESHOLD);
 
-        IntStream.rangeClosed(1, threadNum).boxed()
-                .map((v) -> new DefaultDownloadWorker((v == 1) ? 0 : (v - 1) * per + 1,
-                        (v == threadNum && v * per < fileSize ? fileSize : v * per), fileSize, null,
-                        null, null))
-                .forEach((o) -> System.out.println(o.getStart() + "---" + o.getEnd()));
+
+        if ((fileSize <= THRESHOLD)) {
+            final long per = fileSize / threadNum;
+            IntStream.rangeClosed(1, threadNum).boxed()
+                    .map((v) -> new DefaultDownloadWorker((v == 1) ? 0 : (v - 1) * per + 1,
+                            (v == threadNum && v * per < fileSize ? fileSize : v * per), fileSize,
+                            null, null, null))
+                    .forEach((o) -> System.out.println(o.getStart() + "---" + o.getEnd()));
+        } else {
+            final long per = PER;
+            final int count = (int) (fileSize / per);
+            System.out.println(count);
+            IntStream.rangeClosed(1, count).boxed()
+                    .map((v) -> new DefaultDownloadWorker((v == 1) ? 0 : (v - 1) * per + 1,
+                            (v == count && v * per < fileSize ? fileSize : v * per), fileSize, null,
+                            null, null))
+                    .forEach((o) -> System.out.println(o.getStart() + "---" + o.getEnd()));
+
+        }
+
+        System.out.println(fileSize);
+
+
 
     }
 

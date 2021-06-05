@@ -106,8 +106,13 @@ public class MainLayoutController {
     private void initialize() {
         // address.setText(
         // "https://mirrors.bfsu.edu.cn/apache/zookeeper/zookeeper-3.7.0/apache-zookeeper-3.7.0-bin.tar.gz");
-        address.setText("http://42.192.237.45:8888/tmp.100M");
+        // address.setText("http://42.192.237.45:8888/tmp.100M");
+        address.setText(
+                "https://tcs.teambition.net/storage/33246af155b47bd0ba895f1bef2c63d10794?download=7000+%E5%BD%B1%E8%A7%864K%E5%8F%8A%E5%8E%9F%E7%9B%98%E7%A7%8D%E5%AD%90%E8%B5%84%E6%BA%90.zip&Signature=eyJhbGciOiJIUzI1NiJ9.eyJyZXNvdXJjZSI6Ii9zdG9yYWdlLzMzMjQ2YWYxNTViNDdiZDBiYTg5NWYxYmVmMmM2M2QxMDc5NCIsImV4cCI6MTYyMzA3MzA2Mywic3BlZWQiOjMwNzIwLCJzdG9yYWdlIjoic3RyaWtlci1oeiJ9.GKHB1UfkMPZbyROkcHlKehj5OQoTI1wDIAXeK1Os5g8&filekey=33246af155b47bd0ba895f1bef2c63d10794oic3RyaWtlci1oeiJ9.1wxXEZHEFE-f_EDh1d-6q6x6-AqkmI1PKhzsMs6F9co&filekey=33246af155b47bd0ba895f1bef2c63d10794");
         localAddress.setText("e:\\download\\test\\");
+        proxyAddress.setText("127.0.0.1");
+        proxyPort.setText("7890");
+
         pauseOrResume.setDisable(true);
         Arrays.asList(Type.values()).stream().forEach((t) -> type.getItems().add(t));
         type.setValue(Type.DEFAULT);
