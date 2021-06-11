@@ -2,6 +2,7 @@ package tk.geniusman.worker;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
@@ -48,8 +49,7 @@ public abstract class AbstractDownloadWorker extends RecursiveAction implements 
      * @param url
      * @param dFile
      */
-    public AbstractDownloadWorker(long start, long end, long fileSize, URL url, File dFile,
-            Proxy proxy) {
+    public AbstractDownloadWorker(long start, long end, long fileSize, URL url, File dFile, Proxy proxy) {
         this.start = start;
         this.current = new AtomicLong(start);
         this.end = end;
@@ -58,8 +58,8 @@ public abstract class AbstractDownloadWorker extends RecursiveAction implements 
         this.key = (String.valueOf(this.start) + "-" + String.valueOf(this.end));
         this.fileSize = fileSize;
         this.proxy = proxy;
-        THREAD_DOWNLOAD_TIMEOUT = (this.end - this.start >= PER) ? THREAD_DOWNLOAD_TIMEOUT_LARGE
-                : THREAD_DOWNLOAD_TIMEOUT;
+        THREAD_DOWNLOAD_TIMEOUT =
+            (this.end - this.start >= PER) ? THREAD_DOWNLOAD_TIMEOUT_LARGE : THREAD_DOWNLOAD_TIMEOUT;
 
     }
 
@@ -78,21 +78,7 @@ public abstract class AbstractDownloadWorker extends RecursiveAction implements 
             HttpURLConnection con = null;
             HttpURLConnection.setFollowRedirects(true);
             try {
-                con = (HttpURLConnection) ((proxy != null) ? url.openConnection(proxy)
-                        : url.openConnection());
-                con.setReadTimeout(THREAD_DOWNLOAD_TIMEOUT);
-                con.setConnectTimeout(THREAD_DOWNLOAD_TIMEOUT);
-
-                System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2,SSLv3");
-                con.setRequestProperty("Accept-Encoding", "identity");
-                con.setRequestProperty("User-Agent",
-                        "Mozilla/5.0 (Linux; U; Android 2.2; en-gb; GT-P1000 Build/FROYO) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1");
-                con.setRequestProperty("Accept",
-                        "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-
-                con.setRequestProperty("Accept-Language", "en-US,en;q=0.8");
-                con.setRequestProperty("User-Agent",
-                        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36");
+                con = getUrlConnection();
 
                 if (getCurrent() > end) {
                     return;
@@ -102,20 +88,20 @@ public abstract class AbstractDownloadWorker extends RecursiveAction implements 
                     con.setRequestProperty("Range", "bytes=" + getCurrent() + "-" + end);
                 }
 
-                String logString = String.format("TN:%s,Range %s - %s ",
-                        Thread.currentThread().getName(), getCurrent(), end);
+                String logString =
+                    String.format("TN:%s,Range %s - %s ", Thread.currentThread().getName(), getCurrent(), end);
                 m.getLogViewListener().addLog(logString);
                 try (BufferedInputStream bis = new BufferedInputStream(con.getInputStream());
-                        RandomAccessFile file = new RandomAccessFile(dFile, "rw");) {
+                    RandomAccessFile file = new RandomAccessFile(dFile, "rw");) {
                     file.seek(getCurrent());
-                    final byte[] bytes = new byte[1024];
+                    final byte[] bytes = new byte[1024]; // 1024K
 
                     int readed = 0;
                     while (!t.isInterrupted() && !m.terminate && (readed = bis.read(bytes)) != -1) {
 
                         while (m.isPause()) {
-                            m.getLogViewListener().addLog(String.format("TN:%s pause£¡ ",
-                                    Thread.currentThread().getName()));
+                            m.getLogViewListener()
+                                .addLog(String.format("TN:%s pause£¡ ", Thread.currentThread().getName()));
                             LockSupport.park();
                         }
 
@@ -135,10 +121,8 @@ public abstract class AbstractDownloadWorker extends RecursiveAction implements 
                     // System.err.println("exception occurred while
                     // download..");
                     // e.printStackTrace();
-                    m.getLogViewListener()
-                            .addLog(String.format("TN:%s RERTRY:%s TO:%s EX:%s. ",
-                                    Thread.currentThread().getName(), retryCount,
-                                    THREAD_DOWNLOAD_TIMEOUT, e.getMessage()));
+                    m.getLogViewListener().addLog(String.format("TN:%s RERTRY:%s TO:%s EX:%s. ",
+                        Thread.currentThread().getName(), retryCount, THREAD_DOWNLOAD_TIMEOUT, e.getMessage()));
 
                     Thread.sleep(1000);
                     continue; // write exception or read timeout, retry
@@ -161,6 +145,30 @@ public abstract class AbstractDownloadWorker extends RecursiveAction implements 
             }
         }
         return;
+    }
+
+    /**
+     * getUrlConnection
+     * 
+     * @return
+     * @throws IOException
+     */
+    private HttpURLConnection getUrlConnection() throws IOException {
+        HttpURLConnection con;
+        con = (HttpURLConnection)((proxy != null) ? url.openConnection(proxy) : url.openConnection());
+        con.setReadTimeout(THREAD_DOWNLOAD_TIMEOUT);
+        con.setConnectTimeout(THREAD_DOWNLOAD_TIMEOUT);
+
+        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2,SSLv3");
+        con.setRequestProperty("Accept-Encoding", "identity");
+        con.setRequestProperty("User-Agent",
+            "Mozilla/5.0 (Linux; U; Android 2.2; en-gb; GT-P1000 Build/FROYO) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1");
+        con.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+
+        con.setRequestProperty("Accept-Language", "en-US,en;q=0.8");
+        con.setRequestProperty("User-Agent",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36");
+        return con;
     }
 
     public long getStart() {

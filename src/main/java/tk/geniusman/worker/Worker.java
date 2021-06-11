@@ -5,7 +5,7 @@ import java.io.Serializable;
 import tk.geniusman.manager.Manager;
 
 /**
- * Worker
+ * Worker interface
  * 
  * @author liuyq
  *

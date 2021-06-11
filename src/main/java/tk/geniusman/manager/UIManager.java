@@ -11,6 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.Pane;
@@ -31,9 +32,14 @@ public class UIManager {
     private static final int HEIGHT = 100;
     private static final int PIXELS = WIDTH * HEIGHT;
     private Rectangle[][] array;
+
+    @FXML
     private ProgressBar process;
+    @FXML
     private Label speedLab;
+    @FXML
     private Label percentLab;
+    @FXML
     private Pane processPane;
 
     /**
@@ -43,13 +49,14 @@ public class UIManager {
         Platform.exit();
     }
 
+    private UIManager() {}
+
     /**
      * UIManager
      * 
      * @param array
      */
-    private UIManager(final ProgressBar process, final Label speedLab, final Label percentLab,
-            Pane processPane) {
+    private UIManager(final ProgressBar process, final Label speedLab, final Label percentLab, Pane processPane) {
         this.process = process;
         this.speedLab = speedLab;
         this.percentLab = percentLab;
@@ -64,7 +71,7 @@ public class UIManager {
      */
     public void changePercent(double rate, long speed) {
         process.progressProperty().set(rate);
-        percentLab.setText((int) (rate * 100) + "%");
+        percentLab.setText((int)(rate * 100) + "%");
         speedLab.setText(String.valueOf(speed) + "KB/S");
     }
 
@@ -94,20 +101,17 @@ public class UIManager {
         final Field[] fields = Color.class.getDeclaredFields();
         final AtomicInteger index = new AtomicInteger(1);
         Supplier<Stream<Field>> supplier = () -> {
-            return Arrays.asList(fields).stream()
-                    .filter((f) -> f.getType().isAssignableFrom(Color.class));
+            return Arrays.asList(fields).stream().filter((f) -> f.getType().isAssignableFrom(Color.class));
         };
-        supplier.get().skip(new Random().nextInt((int) supplier.get().count() - 15))
-                .forEach((f) -> {
-                    try {
-                        f.setAccessible(true);
-                        THREAD_COLOR.put("ForkJoinThread-" + index.getAndIncrement(),
-                                (Color) f.get(null));
-                    } catch (Exception e) {
-                    } finally {
-                        f.setAccessible(false);
-                    }
-                });
+        supplier.get().skip(new Random().nextInt((int)supplier.get().count() - 15)).forEach((f) -> {
+            try {
+                f.setAccessible(true);
+                THREAD_COLOR.put("ForkJoinThread-" + index.getAndIncrement(), (Color)f.get(null));
+            } catch (Exception e) {
+            } finally {
+                f.setAccessible(false);
+            }
+        });
 
         // type.getItems().clear();
 
@@ -125,15 +129,13 @@ public class UIManager {
             return;
         }
 
-        BigDecimal startRate = BigDecimal.valueOf(start).divide(BigDecimal.valueOf(total), 10,
-                RoundingMode.HALF_UP);
+        BigDecimal startRate = BigDecimal.valueOf(start).divide(BigDecimal.valueOf(total), 10, RoundingMode.HALF_UP);
         BigDecimal start1 = startRate.multiply(BigDecimal.valueOf(PIXELS));
-        BigDecimal endRate =
-                BigDecimal.valueOf(end).divide(BigDecimal.valueOf(total), 10, RoundingMode.HALF_UP);
+        BigDecimal endRate = BigDecimal.valueOf(end).divide(BigDecimal.valueOf(total), 10, RoundingMode.HALF_UP);
         BigDecimal end1 = endRate.multiply(BigDecimal.valueOf(PIXELS));
 
-        setColor((start1.intValue() % WIDTH), (start1.intValue() / HEIGHT),
-                (end1.intValue() % WIDTH), (end1.intValue() / HEIGHT), t, (total <= PIXELS * 1024));
+        setColor((start1.intValue() % WIDTH), (start1.intValue() / HEIGHT), (end1.intValue() % WIDTH),
+            (end1.intValue() / HEIGHT), t, (total <= PIXELS * 1024));
     }
 
     /**
@@ -169,8 +171,7 @@ public class UIManager {
             return;
         }
 
-        final Color color =
-                THREAD_COLOR.containsKey(t.getName()) ? THREAD_COLOR.get(t.getName()) : Color.BLUE;
+        final Color color = THREAD_COLOR.containsKey(t.getName()) ? THREAD_COLOR.get(t.getName()) : Color.BLUE;
         if (isLoop) {
             for (int y = startY; y <= endY; y++) {
                 for (int x = startX; x <= ((y == endY) ? endX : WIDTH - 1); x++) {
@@ -199,12 +200,20 @@ public class UIManager {
      * @param array
      * @return new instance of RectangleManager
      */
-    public static UIManager newInstance(final ProgressBar process, final Label speedLab,
-            final Label percentLab, final Pane processPane) {
-        return new UIManager(process, speedLab, percentLab, processPane);
+    public static UIManager newInstance() {
+        return new UIManager();
     }
 
-
+    /**
+     * newInstance
+     * 
+     * @param array
+     * @return new instance of RectangleManager
+     */
+    public static UIManager newInstance(final ProgressBar process, final Label speedLab, final Label percentLab,
+        final Pane processPane) {
+        return new UIManager(process, speedLab, percentLab, processPane);
+    }
 
     /**
      * 
@@ -213,18 +222,16 @@ public class UIManager {
     public static void main(String[] args) {
         final Field[] fields = Color.class.getDeclaredFields();
         final AtomicInteger index = new AtomicInteger(1);
-        Arrays.asList(fields).parallelStream()
-                .filter((f) -> f.getType().isAssignableFrom(Color.class)).forEach((f) -> {
-                    try {
-                        f.setAccessible(true);
-                        THREAD_COLOR.put("ForkJoinThread-" + index.getAndIncrement(),
-                                (Color) f.get(null));
-                    } catch (Exception e) {
-                        // e.printStackTrace();
-                    } finally {
-                        f.setAccessible(false);
-                    }
-                });
+        Arrays.asList(fields).parallelStream().filter((f) -> f.getType().isAssignableFrom(Color.class)).forEach((f) -> {
+            try {
+                f.setAccessible(true);
+                THREAD_COLOR.put("ForkJoinThread-" + index.getAndIncrement(), (Color)f.get(null));
+            } catch (Exception e) {
+                // e.printStackTrace();
+            } finally {
+                f.setAccessible(false);
+            }
+        });
 
         THREAD_COLOR.forEach((name, color) -> {
             System.out.println("name:" + name + ", color:" + color.toString());

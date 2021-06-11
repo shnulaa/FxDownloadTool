@@ -29,10 +29,9 @@ public class MainGui extends Application {
     private static final String ICON = "/image/icon1.png";
     private static final String TITLE = "Java Download Tools";
 
-    private static final String THEME_KEY = "com.sun.javafx.highContrastTheme";
-    private static final String THEME_value = "BLACKONWHITE";
-    private static final String ACCESSIBILITY_THEME = "High Contrast #2";
-
+    // private static final String THEME_KEY = "com.sun.javafx.highContrastTheme";
+    // private static final String THEME_value = "BLACKONWHITE";
+    // private static final String ACCESSIBILITY_THEME = "High Contrast #2";
 
     private static final String RESOURCE_CSS = "/theme/modena_dark.css";
 
@@ -66,8 +65,6 @@ public class MainGui extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle(TITLE);
 
-
-
         setUserAgentStylesheet(STYLESHEET_MODENA);
         // System.setProperty(THEME_KEY, THEME_value);
         // com.sun.javafx.application.PlatformImpl.setAccessibilityTheme(ACCESSIBILITY_THEME);
@@ -98,7 +95,8 @@ public class MainGui extends Application {
     /**
      * set the root layout dragable
      * 
-     * @param n the instance of Node
+     * @param n
+     *            the instance of Node
      */
     private void setDragable(Node n) {
         n.setOnMousePressed((event) -> {
@@ -114,10 +112,11 @@ public class MainGui extends Application {
     /**
      * set the root layout dragable
      * 
-     * @param the instance of Pane
+     * @param the
+     *            instance of Pane
      */
     private void setDragable(Pane p) {
-        setDragable((Node) p);
+        setDragable((Node)p);
         for (Node n : p.getChildren()) {
             setDragable(n);
         }

@@ -32,29 +32,39 @@ import tk.geniusman.manager.UIManager;
  * @author liuyq
  *
  */
-
 @SuppressWarnings("restriction")
 public class MainLayoutController {
 
     /**
-     * thread number
+     * default thread number
      */
-    private static final int THREAD_NUMBER = 20;
+    private static final int DEFAULT_THREAD_NUMBER = 20;
+
+    /**
+     * default download URL
+     */
+    private static final String DEFAULT_DOWNLOAD_URL =
+        "https://mirrors.bfsu.edu.cn/apache/zookeeper/zookeeper-3.7.0/apache-zookeeper-3.7.0-bin.tar.gz";
+
+    /**
+     * default download URL
+     */
+    private static final String DEFAULT_LOCAL_PATH = "d:\\download";
 
     @FXML
-    private TextField address; // download URL address
+    private TextField address; // 下载地址
 
     @FXML
-    private TextField localAddress; // local IP address
+    private TextField localAddress; // 本地下载地址
 
     @FXML
-    private Button open;
+    private Button open; // 打开本地目录
 
     @FXML
-    private Button download;
+    private Button download; // 下载按钮
 
     @FXML
-    private Button pauseOrResume;
+    private Button pauseOrResume; //
 
     @FXML
     private Button clearLog;
@@ -94,7 +104,14 @@ public class MainLayoutController {
     @FXML
     private ListView<String> logListView;
 
+    /**
+     * 单例Manager实例
+     */
     private final Manager m = Manager.getInstance();
+
+    /**
+     * 页面控制
+     */
     private UIManager uiManager;
 
     /**
@@ -104,34 +121,19 @@ public class MainLayoutController {
 
     @FXML
     private void initialize() {
-        // address.setText(
-        // "https://mirrors.bfsu.edu.cn/apache/zookeeper/zookeeper-3.7.0/apache-zookeeper-3.7.0-bin.tar.gz");
-        // address.setText("http://42.192.237.45:8888/tmp.100M");
-        address.setText(
-                "https://tcs.teambition.net/storage/33246af155b47bd0ba895f1bef2c63d10794?download=7000+%E5%BD%B1%E8%A7%864K%E5%8F%8A%E5%8E%9F%E7%9B%98%E7%A7%8D%E5%AD%90%E8%B5%84%E6%BA%90.zip&Signature=eyJhbGciOiJIUzI1NiJ9.eyJyZXNvdXJjZSI6Ii9zdG9yYWdlLzMzMjQ2YWYxNTViNDdiZDBiYTg5NWYxYmVmMmM2M2QxMDc5NCIsImV4cCI6MTYyMzA3MzA2Mywic3BlZWQiOjMwNzIwLCJzdG9yYWdlIjoic3RyaWtlci1oeiJ9.GKHB1UfkMPZbyROkcHlKehj5OQoTI1wDIAXeK1Os5g8&filekey=33246af155b47bd0ba895f1bef2c63d10794oic3RyaWtlci1oeiJ9.1wxXEZHEFE-f_EDh1d-6q6x6-AqkmI1PKhzsMs6F9co&filekey=33246af155b47bd0ba895f1bef2c63d10794");
-        localAddress.setText("e:\\download\\test\\");
-        proxyAddress.setText("127.0.0.1");
-        proxyPort.setText("7890");
+        // set Default controller Value
+        setDefaultValue();
 
-        pauseOrResume.setDisable(true);
-        Arrays.asList(Type.values()).stream().forEach((t) -> type.getItems().add(t));
-        type.setValue(Type.DEFAULT);
-
+        // INIT UIManager instance
         uiManager = UIManager.newInstance(process, speedLab, percentLab, processPane);
         uiManager.init();
-        stop.setDisable(true);
-
-        // init logListView
-        ObservableList<String> data = FXCollections.observableArrayList();
-        logListView.setItems(data);
 
         // add change Color listener
-        m.addListener((start, end, fileSize, t) -> Platform
-                .runLater(() -> uiManager.changeColor(start, end, fileSize, t)));
+        m.addListener(
+            (start, end, fileSize, t) -> Platform.runLater(() -> uiManager.changeColor(start, end, fileSize, t)));
 
         // add change Percent listener
-        m.addProcessListener(
-                (rate, speed, t) -> Platform.runLater(() -> uiManager.changePercent(rate, speed)));
+        m.addProcessListener((rate, speed, t) -> Platform.runLater(() -> uiManager.changePercent(rate, speed)));
 
         // add finish listener
         m.addFinishListener((hasError, message) -> {
@@ -139,19 +141,40 @@ public class MainLayoutController {
                 download.setDisable(false);
                 pauseOrResume.setText("Pause");
                 pauseOrResume.setDisable(true);
+                stop.setDisable(true);
                 m.getLogViewListener().addLog("Download finish. message：" + message);
                 showAlert("File Download Tools", message,
-                        hasError ? Alert.AlertType.ERROR : Alert.AlertType.INFORMATION);
+                    hasError ? Alert.AlertType.ERROR : Alert.AlertType.INFORMATION);
             });
         });
 
+        // add log increase Listener
         m.addLogListener((log) -> {
             Platform.runLater(() -> {
                 logListView.getItems().add(log);
             });
         });
 
+    }
 
+    /**
+     * set Default Controller Value
+     */
+    private void setDefaultValue() {
+        address.setText(DEFAULT_DOWNLOAD_URL);
+        localAddress.setText(DEFAULT_LOCAL_PATH);
+        proxyAddress.setText("");
+        proxyPort.setText("");
+
+        pauseOrResume.setDisable(true);
+        Arrays.asList(Type.values()).stream().forEach((t) -> type.getItems().add(t));
+        type.setValue(Type.DEFAULT);
+
+        stop.setDisable(true);
+
+        // INIT logListView
+        ObservableList<String> data = FXCollections.observableArrayList();
+        logListView.setItems(data);
     }
 
     /**
@@ -161,26 +184,23 @@ public class MainLayoutController {
     private void handleDownload() throws Exception {
         String addressTxt = address.getText();
         if (addressTxt == null || addressTxt.isEmpty()) {
-            showAlert("File Download Tools", "address URL must be specified..",
-                    Alert.AlertType.ERROR);
+            showAlert("File Download Tools", "address URL must be specified..", Alert.AlertType.ERROR);
             return;
         }
 
         String localAddressTxt = localAddress.getText();
         if (localAddressTxt == null || localAddressTxt.isEmpty()) {
-            showAlert("File Download Tools", "Local saved Path must be specified..",
-                    Alert.AlertType.ERROR);
+            showAlert("File Download Tools", "Local saved Path must be specified..", Alert.AlertType.ERROR);
             return;
         }
 
         Type t = type.getValue();
         if (t == null) {
-            showAlert("File Download Tools", "download type must be specified..",
-                    Alert.AlertType.ERROR);
+            showAlert("File Download Tools", "download type must be specified..", Alert.AlertType.ERROR);
             return;
         }
 
-        int threadNumInt = THREAD_NUMBER;
+        int threadNumInt = DEFAULT_THREAD_NUMBER;
         if (theadNumber.getText() != null && !theadNumber.getText().isEmpty()) {
             threadNumInt = Integer.valueOf(theadNumber.getText());
         }
@@ -189,8 +209,8 @@ public class MainLayoutController {
         logListView.getItems().clear();
         uiManager.init();
         Manager.getInstance().clear();
-        final Args args = Args.newInstance(addressTxt, threadNumInt, localAddressTxt, null,
-                proxyAddress.getText(), proxyPort.getText(), "start");
+        final Args args = Args.newInstance(addressTxt, threadNumInt, localAddressTxt, null, proxyAddress.getText(),
+            proxyPort.getText(), "start");
         Downloader downloader = DownloaderFactory.getInstance(t, args);
 
         m.getLogViewListener().addLog("Download start.");
@@ -208,9 +228,8 @@ public class MainLayoutController {
     private void handleOpen() {
         String defaultPath = "c:\\";
         try {
-            openDirectory((localAddress.getText() != null && !localAddress.getText().isEmpty())
-                    ? localAddress.getText()
-                    : defaultPath);
+            openDirectory((localAddress.getText() != null && !localAddress.getText().isEmpty()) ? localAddress.getText()
+                : defaultPath);
         } catch (Exception e) {
             openDirectory(defaultPath);
         }
@@ -242,8 +261,7 @@ public class MainLayoutController {
 
     @FXML
     private void handleStop() throws Exception {
-        Optional<ButtonType> ret =
-                showAlert("File Download Tools", "Confirm to stop..", Alert.AlertType.CONFIRMATION);
+        Optional<ButtonType> ret = showAlert("File Download Tools", "Confirm to stop..", Alert.AlertType.CONFIRMATION);
         if (ret.get() == ButtonType.OK) {
             download.setDisable(true);
             stop.setDisable(true);
@@ -265,8 +283,8 @@ public class MainLayoutController {
 
     @FXML
     private void handleTerminate() {
-        Optional<ButtonType> ret = showAlert("File Download Tools", "Confirm to terminate..",
-                Alert.AlertType.CONFIRMATION);
+        Optional<ButtonType> ret =
+            showAlert("File Download Tools", "Confirm to terminate..", Alert.AlertType.CONFIRMATION);
         if (ret.get() == ButtonType.OK) {
             Platform.runLater(() -> Platform.exit());;
         }
