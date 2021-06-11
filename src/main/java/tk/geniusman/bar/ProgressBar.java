@@ -3,7 +3,7 @@ package tk.geniusman.bar;
 /**
  * ProgressBar
  * 
- * @author liuyq
+ * @author liuyq 
  *
  */
 public class ProgressBar {
