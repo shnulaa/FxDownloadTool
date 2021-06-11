@@ -1,6 +1,7 @@
 package tk.geniusman.fx.controller;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Optional;
 import javafx.application.Platform;
@@ -19,6 +20,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.StageStyle;
+import tk.geniusman.db.DBHandler;
 import tk.geniusman.downloader.Args;
 import tk.geniusman.downloader.Downloader;
 import tk.geniusman.downloader.DownloaderFactory;
@@ -121,6 +123,9 @@ public class MainLayoutController {
 
     @FXML
     private void initialize() {
+        // db init
+        initDB();
+
         // set Default controller Value
         setDefaultValue();
 
@@ -305,5 +310,51 @@ public class MainLayoutController {
         a.setResizable(false);
         a.setContentText(message);
         return a.showAndWait();
+    }
+
+    /**
+     * INIT Database
+     */
+    private void initDB() {
+        DBHandler db = null;
+        try {
+            db = new DBHandler("fx_download_file");
+        } catch (Exception ex1) {
+            ex1.printStackTrace(); // could not start db
+
+            return; // bye bye
+        }
+
+        try {
+            // make an empty table
+            //
+            // by declaring the id column IDENTITY, the db will automatically
+            // generate unique values for new rows- useful for row keys
+            db.update("CREATE TABLE sample_table ( id INTEGER IDENTITY, str_col VARCHAR(256), num_col INTEGER)");
+        } catch (SQLException ex2) {
+            // ignore
+            // ex2.printStackTrace(); // second time we run program
+            // should throw execption since table
+            // already there
+            //
+            // this will have no effect on the db
+        }
+
+        try {
+            // add some rows - will create duplicates if run more then once
+            // the id column is automatically generated
+            db.update("INSERT INTO sample_table(str_col,num_col) VALUES('Ford', 100)");
+            db.update("INSERT INTO sample_table(str_col,num_col) VALUES('Toyota', 200)");
+            db.update("INSERT INTO sample_table(str_col,num_col) VALUES('Honda', 300)");
+            db.update("INSERT INTO sample_table(str_col,num_col) VALUES('GM', 400)");
+            // db.update("update sample_table(str_col,num_col) VALUES('GM',
+            // 400)");
+            // do a query
+            db.query("SELECT * FROM sample_table WHERE num_col < 550");
+            // at end of program
+            db.shutdown();
+        } catch (SQLException ex3) {
+            ex3.printStackTrace();
+        }
     }
 }
